@@ -42,11 +42,27 @@
   .print{position:absolute;top:14px;right:16px;z-index:2;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:10px;padding:5px 12px;font:inherit;font-size:.82rem;color:var(--ink2);cursor:pointer}
   @media (max-width:560px){.print{display:none}}
 
-  /* ---------- 2 ส่วนข้างกัน ---------- */
-  main{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
-  @media (max-width:980px){main{grid-template-columns:1fr}}
-  .panel{--accent:var(--pre);--soft:var(--pre-soft);--mid:var(--pre-mid);display:grid;gap:14px;min-width:0}
-  #post{--accent:var(--post);--soft:var(--post-soft);--mid:var(--post-mid)}
+  /* ---------- แท็บ ---------- */
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#e7ebf1;padding:6px;border-radius:18px;margin-bottom:20px}
+  .tab{display:flex;align-items:center;gap:12px;border:0;background:transparent;border-radius:14px;padding:10px 14px;font:inherit;cursor:pointer;text-align:left;color:var(--muted);transition:background .15s,box-shadow .15s}
+  .tab .ic{flex:none;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.6);display:grid;place-items:center;font-size:22px}
+  .tab b{display:block;font-size:1.05rem;color:var(--ink2);font-weight:600;line-height:1.3}
+  .tab small{font-size:.82rem}
+  .tab:hover{background:rgba(255,255,255,.5)}
+  .tab[aria-selected=true]{background:var(--card);box-shadow:var(--shadow)}
+  .tab[aria-selected=true] .ic{background:var(--soft)}
+  .tab[aria-selected=true] b{color:var(--accent)}
+  .tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  @media (max-width:520px){.tab small{display:none}.tab{padding:8px 10px;gap:8px}.tab .ic{width:34px;height:34px;font-size:18px}}
+
+  /* ---------- ส่วนเนื้อหา: ฟอร์มซ้าย ผลลัพธ์ขวา ---------- */
+  .panel{--accent:var(--pre);--soft:var(--pre-soft);--mid:var(--pre-mid);display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start;min-width:0}
+  .panel[hidden]{display:none}
+  #tab-pre,#pre{--accent:var(--pre);--soft:var(--pre-soft);--mid:var(--pre-mid)}
+  #tab-post,#post{--accent:var(--post);--soft:var(--post-soft);--mid:var(--post-mid)}
+  .panel > .ph{display:none}
+  .panel > .form{position:sticky;top:16px}
+  @media (max-width:900px){.panel{grid-template-columns:1fr}.panel > .form{position:static}}
   .ph{display:flex;align-items:center;gap:12px;padding:4px 4px 0}
   .ph .ic{flex:none;width:48px;height:48px;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:26px}
   .ph h2{margin:0;font-size:1.25rem;color:var(--accent);line-height:1.3}
@@ -154,7 +170,8 @@
 
   @media print{
     body{background:#fff} .print,.chips,.stepper button,.mascot{display:none}
-    main{grid-template-columns:1fr} .panel{break-inside:avoid;margin-bottom:24px}
+    .tabs{display:none} .panel[hidden],.panel{display:grid;grid-template-columns:1fr;break-inside:avoid;margin-bottom:24px}
+    .panel > .ph{display:flex} .panel > .form{position:static}
     .card,.hero-head{box-shadow:none;border:1px solid var(--line)} .tbl-wrap{max-height:none}
   }
 </style>
@@ -176,9 +193,14 @@
   </div>
 </header>
 
+<div class="tabs" role="tablist" aria-label="เลือกส่วน">
+  <button class="tab" id="tab-pre" role="tab" aria-selected="true" aria-controls="pre"><span class="ic emo">💼</span><span><b>ยังทำงานอยู่</b><small>ต้องออมเดือนละเท่าไร</small></span></button>
+  <button class="tab" id="tab-post" role="tab" aria-selected="false" aria-controls="post" tabindex="-1"><span class="ic emo">🏖️</span><span><b>เกษียณแล้ว</b><small>เงินที่มีพอใช้ถึงเมื่อไร</small></span></button>
+</div>
+
 <main>
 <!-- ===================== ยังทำงานอยู่ ===================== -->
-<section class="panel" id="pre">
+<section class="panel" id="pre" role="tabpanel" aria-labelledby="tab-pre">
   <div class="ph"><div class="ic emo">💼</div><div><h2>ยังทำงานอยู่</h2><p>ต้องออมเดือนละเท่าไร ถึงจะเกษียณได้สบาย</p></div></div>
 
   <div class="card form">
@@ -257,7 +279,7 @@
 </section>
 
 <!-- ===================== เกษียณแล้ว ===================== -->
-<section class="panel" id="post">
+<section class="panel" id="post" role="tabpanel" aria-labelledby="tab-post" hidden>
   <div class="ph"><div class="ic emo">🏖️</div><div><h2>เกษียณแล้ว</h2><p>เงินที่มีอยู่ พอใช้ถึงอายุเท่าไร</p></div></div>
 
   <div class="card form">
@@ -664,6 +686,27 @@ function calcPost(){
     '</td><td>' + fmt0.format(Math.round(rw.p)) + '</td><td' + (rw.bal <= 0 ? ' class="neg"' : '') + '>' +
     (rw.bal <= 0 ? 'หมด' : fmt0.format(Math.round(rw.bal))) + '</td></tr>').join('');
 }
+
+/* ---------- แท็บ ---------- */
+const TABS = [['tab-pre','pre','p'], ['tab-post','post','q']];
+function showTab(id){
+  TABS.forEach(([t, p, k]) => {
+    const on = t === id;
+    $(t).setAttribute('aria-selected', on);
+    $(t).tabIndex = on ? 0 : -1;
+    $(p).hidden = !on;
+    if (on && charts[k]) charts[k].resize();
+  });
+  try { localStorage.setItem('retireTab', id); } catch (e) {}
+}
+TABS.forEach(([t]) => $(t).addEventListener('click', () => showTab(t)));
+$('tab-pre').parentElement.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  const next = document.activeElement.id === 'tab-pre' ? 'tab-post' : 'tab-pre';
+  showTab(next); $(next).focus();
+});
+try { const saved = localStorage.getItem('retireTab'); if (saved && $(saved)) showTab(saved); } catch (e) {}
+window.addEventListener('beforeprint', () => Object.values(charts).forEach(c => c.resize()));
 
 syncChips();
 calcPre();
