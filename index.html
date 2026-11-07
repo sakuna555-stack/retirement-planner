@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วางแผนเกษียณ by Nok SAKUNA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f3f5f9; --card:#fff; --ink:#0f172a; --ink2:#334155; --muted:#64748b; --line:#e2e8f0; --field:#f8fafc;
+    --pre:#0f766e; --pre-soft:#e6f4f1; --pre-mid:#86c9bd;
+    --post:#b45309; --post-soft:#fdf1e2; --post-mid:#e9b77a;
+    --good:#15803d; --good-soft:#e7f6ec; --bad:#b91c1c; --bad-soft:#fdeceb;
+    --gold:#d99a3d; --gray:#94a3b8;
+    --shadow:0 1px 2px rgba(15,23,42,.04),0 4px 16px rgba(15,23,42,.06);
+    --emoji:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Thai","Leelawadee UI",Tahoma,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+  .emo{font-family:var(--emoji);font-style:normal}
+
+  /* ---------- Header ---------- */
+  .hero-head{margin:24px 0 20px;border-radius:24px;padding:28px 32px;background:linear-gradient(120deg,#e6f4f1 0%,#fff6e8 55%,#ffe9ef 100%);display:flex;align-items:center;gap:24px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .hero-head .txt{flex:1;min-width:0;position:relative;z-index:1}
+  .hero-head h1{margin:0;font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;letter-spacing:-.01em;line-height:1.25}
+  .hero-head h1 .by{display:inline-block;font-size:.5em;font-weight:600;vertical-align:middle;background:#fff;color:#c2185b;border-radius:999px;padding:3px 12px;margin-left:6px;box-shadow:0 1px 4px rgba(194,24,91,.15)}
+  .hero-head p{margin:8px 0 0;color:var(--ink2);font-size:1.02rem}
+  .quote{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.75);border-radius:999px;padding:6px 14px;font-weight:600;color:var(--pre);font-size:.95rem;transition:opacity .4s}
+  .mascot{flex:none;position:relative;width:150px;height:130px}
+  .pig{position:absolute;left:50%;bottom:0;transform:translateX(-50%);font-size:92px;line-height:1;animation:bob 2.6s ease-in-out infinite;filter:drop-shadow(0 8px 10px rgba(217,154,61,.3))}
+  .coin{position:absolute;left:50%;top:-6px;font-size:30px;line-height:1;animation:drop 2.6s ease-in infinite}
+  .spark{position:absolute;font-size:22px;animation:twinkle 2.2s ease-in-out infinite}
+  .spark.s1{left:2px;top:22px}.spark.s2{right:0;top:44px;animation-delay:.8s}.spark.s3{left:18px;bottom:6px;animation-delay:1.4s;font-size:18px}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0) rotate(-3deg)}50%{transform:translateX(-50%) translateY(-6px) rotate(3deg)}}
+  @keyframes drop{0%{transform:translate(-50%,-10px);opacity:0}15%{opacity:1}55%{transform:translate(-50%,38px);opacity:1}70%,100%{transform:translate(-50%,44px);opacity:0}}
+  @keyframes twinkle{0%,100%{transform:scale(.7);opacity:.4}50%{transform:scale(1.1);opacity:1}}
+  @media (prefers-reduced-motion:reduce){.pig,.coin,.spark{animation:none}.coin{opacity:0}}
+  @media (max-width:560px){.hero-head{padding:22px 20px;flex-direction:column-reverse;text-align:center}.mascot{height:110px}.pig{font-size:76px}}
+  .print{position:absolute;top:14px;right:16px;z-index:2;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:10px;padding:5px 12px;font:inherit;font-size:.82rem;color:var(--ink2);cursor:pointer}
+  @media (max-width:560px){.print{display:none}}
+
+  /* ---------- 2 ส่วนข้างกัน ---------- */
+  main{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+  @media (max-width:980px){main{grid-template-columns:1fr}}
+  .panel{--accent:var(--pre);--soft:var(--pre-soft);--mid:var(--pre-mid);display:grid;gap:14px;min-width:0}
+  #post{--accent:var(--post);--soft:var(--post-soft);--mid:var(--post-mid)}
+  .ph{display:flex;align-items:center;gap:12px;padding:4px 4px 0}
+  .ph .ic{flex:none;width:48px;height:48px;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:26px}
+  .ph h2{margin:0;font-size:1.25rem;color:var(--accent);line-height:1.3}
+  .ph p{margin:0;font-size:.88rem;color:var(--muted)}
+  .card{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:20px;min-width:0}
+  .form{border-top:4px solid var(--accent)}
+
+  /* Fields */
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:420px){.row{grid-template-columns:1fr}}
+  .f{margin-bottom:14px}
+  .f label{display:block;font-size:.86rem;font-weight:500;color:var(--ink2);margin-bottom:5px}
+  .help{font-size:.76rem;color:var(--muted);margin-top:4px}
+  .in{position:relative}
+  .in input{width:100%;padding:10px 48px 10px 12px;border:1.5px solid transparent;border-radius:12px;background:var(--field);font:inherit;font-weight:600;font-size:1rem;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums;transition:border-color .15s,background .15s}
+  .in input:hover{border-color:var(--line)}
+  .in input:focus{outline:none;border-color:var(--accent);background:#fff}
+  .in .u{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.8rem;pointer-events:none}
+  .slider-head{display:flex;justify-content:space-between;align-items:baseline}
+  .slider-head output{font-size:1.35rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+  .slider-head output small{font-size:.85rem;font-weight:500;color:var(--muted)}
+  input[type=range]{width:100%;accent-color:var(--accent);margin:2px 0 0;cursor:pointer}
+  .scale{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted)}
+  .stepper{display:flex;gap:6px}
+  .stepper .in{flex:1}
+  .stepper .in input{text-align:center;padding-right:40px}
+  .stepper button{width:42px;border:0;border-radius:12px;background:var(--soft);color:var(--accent);font:inherit;font-size:1.2rem;font-weight:700;cursor:pointer}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+  .chips button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:2px 10px;font:inherit;font-size:.76rem;color:var(--muted);cursor:pointer}
+  .chips button:hover{border-color:var(--accent);color:var(--accent)}
+  .chips button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;color:var(--ink2);cursor:pointer;margin:-2px 0 14px}
+  .check input{accent-color:var(--accent);width:18px;height:18px;margin:2px 0 0}
+  .bad-f input[type=range]{accent-color:var(--bad)} .bad-f output{color:var(--bad)!important}
+  details.more{border-top:1px solid var(--line);margin:2px -20px -20px;padding:0 20px}
+  details.more summary{list-style:none;cursor:pointer;padding:13px 0;font-size:.86rem;font-weight:500;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::after{content:"";width:8px;height:8px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .2s;margin-right:4px}
+  details.more[open] summary::after{transform:rotate(-135deg)}
+  details.more[open]{padding-bottom:6px}
+
+  /* Results */
+  .results{display:grid;gap:14px;min-width:0}
+  .banner{border-radius:14px;padding:11px 14px;font-weight:600;display:flex;gap:10px;align-items:center;font-size:.95rem}
+  .banner::before{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:.85rem;font-weight:700}
+  .banner.good{background:var(--good-soft);color:var(--good)} .banner.good::before{content:"✓";background:var(--good)}
+  .banner.bad{background:var(--bad-soft);color:var(--bad)} .banner.bad::before{content:"!";background:var(--bad)}
+  .banner.info{background:var(--soft);color:var(--accent)} .banner.info::before{content:"i";background:var(--accent)}
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:460px){.kpis{grid-template-columns:1fr}}
+  .kpi .k{font-size:.85rem;color:var(--muted)}
+  .kpi .v{font-size:clamp(1.6rem,3.4vw,2.1rem);font-weight:700;line-height:1.2;margin:4px 0 2px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .kpi .v small{font-size:.88rem;font-weight:500;color:var(--muted);margin-left:4px}
+  .kpi .d{font-size:.8rem;color:var(--muted)}
+  .kpi.main{background:var(--accent);color:#fff}
+  .kpi.main .k,.kpi.main .d,.kpi.main .v small{color:rgba(255,255,255,.85)}
+  .card h3{margin:0 0 2px;font-size:.98rem;font-weight:600}
+  .card .cap{margin:0 0 10px;font-size:.82rem;color:var(--muted)}
+  .facts{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+  .facts li{display:flex;gap:10px;align-items:baseline;font-size:.9rem;color:var(--ink2)}
+  .facts li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--mid);transform:translateY(-2px)}
+  .facts b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .facts .warn,.facts .warn b{color:var(--bad)}
+  .cheer{display:flex;gap:12px;align-items:center;background:linear-gradient(90deg,#fff6e8,#ffeef3);border-radius:14px;padding:12px 14px;font-size:.92rem;color:var(--ink2)}
+  .cheer .emo{font-size:30px;line-height:1}
+  .cheer b{color:var(--ink)}
+  .chart-box{position:relative;height:260px}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin-top:8px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px}
+  .nochart{display:none;font-size:.85rem;color:var(--muted);padding:16px;border:1px dashed var(--line);border-radius:12px;text-align:center}
+  .comp{display:flex;height:14px;border-radius:999px;overflow:hidden;gap:2px;margin:6px 0 12px}
+  .comp-lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+  .comp-lg div{font-size:.8rem;color:var(--muted)}
+  .comp-lg b{display:block;font-size:1rem;color:var(--ink);font-variant-numeric:tabular-nums}
+  .comp-lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+  .alts{display:grid;gap:8px}
+  .alt{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--field);border-radius:12px;padding:10px 12px;font-size:.88rem}
+  .alt .r{text-align:right;white-space:nowrap}
+  .alt .r b{font-variant-numeric:tabular-nums}
+  .alt .r span{display:block;font-size:.76rem;color:var(--good);font-weight:600}
+  details.data summary{cursor:pointer;font-weight:600;font-size:.92rem}
+  table.kv{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:10px}
+  table.kv td{padding:8px 0;border-bottom:1px solid var(--line)}
+  table.kv td:last-child{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:12px}
+  .tbl-wrap{max-height:300px;overflow:auto;margin-top:12px;border:1px solid var(--line);border-radius:12px}
+  table.yr{width:100%;border-collapse:collapse;font-size:.84rem;font-variant-numeric:tabular-nums}
+  table.yr th{position:sticky;top:0;background:var(--field);padding:8px 10px;text-align:right;font-weight:600;color:var(--ink2)}
+  table.yr th:first-child,table.yr td:first-child{text-align:center}
+  table.yr td{padding:6px 10px;text-align:right;border-top:1px solid var(--line)}
+  table.yr tr.hl td{background:#fff7d6}
+  table.yr td.neg{color:var(--bad)}
+  .note{font-size:.76rem;color:var(--muted);margin:10px 0 0}
+  .errbox{display:none;background:var(--bad-soft);color:var(--bad);border-radius:14px;padding:14px 16px;font-weight:600}
+  .results.error .errbox{display:block}
+  .results.error > :not(.errbox){display:none}
+
+  .gloss{margin:28px 0 12px}
+  .gloss h2{font-size:1rem;font-weight:600;margin:0 0 12px}
+  .gloss dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:0}
+  .gloss dl div{background:var(--card);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+  .gloss dt{font-weight:600}
+  .gloss dd{margin:2px 0 0;color:var(--muted);font-size:.86rem}
+  footer{padding:8px 0 36px;color:var(--muted);font-size:.8rem;text-align:center}
+
+  @media print{
+    body{background:#fff} .print,.chips,.stepper button,.mascot{display:none}
+    main{grid-template-columns:1fr} .panel{break-inside:avoid;margin-bottom:24px}
+    .card,.hero-head{box-shadow:none;border:1px solid var(--line)} .tbl-wrap{max-height:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero-head">
+  <button class="print" onclick="window.print()">พิมพ์ / PDF</button>
+  <div class="txt">
+    <h1>วางแผนเกษียณ <span class="by">by Nok SAKUNA</span></h1>
+    <p>กรอกตัวเลขไม่กี่ช่อง รู้ทันทีว่าต้องเก็บเท่าไร และเงินพอใช้ไหม</p>
+    <div class="quote" id="quote"><span class="emo">🌱</span><span>ออมวันละนิด อนาคตสบายใจ</span></div>
+  </div>
+  <div class="mascot" aria-hidden="true">
+    <span class="emo spark s1">✨</span><span class="emo spark s2">💖</span><span class="emo spark s3">⭐</span>
+    <span class="emo coin">🪙</span>
+    <span class="emo pig">🐦‍🔥</span>
+  </div>
+</header>
+
+<main>
+<!-- ===================== ยังทำงานอยู่ ===================== -->
+<section class="panel" id="pre">
+  <div class="ph"><div class="ic emo">💼</div><div><h2>ยังทำงานอยู่</h2><p>ต้องออมเดือนละเท่าไร ถึงจะเกษียณได้สบาย</p></div></div>
+
+  <div class="card form">
+    <div class="row">
+      <div class="f"><label for="p_age">อายุตอนนี้</label><div class="in"><input id="p_age" data-num value="35"><span class="u">ปี</span></div></div>
+      <div class="f"><label for="p_life">ใช้เงินถึงอายุ</label><div class="in"><input id="p_life" data-num value="85"><span class="u">ปี</span></div></div>
+    </div>
+    <div class="f" id="p_retire_box">
+      <div class="slider-head"><label for="p_retire">เกษียณตอนอายุ</label><output id="p_retire_out">60 <small>ปี</small></output></div>
+      <input type="range" id="p_retire" min="30" max="80" step="1" value="60">
+      <div class="scale"><span>30</span><span>40</span><span>50</span><span>60</span><span>70</span><span>80</span></div>
+    </div>
+    <div class="row">
+      <div class="f"><label for="p_expense">อยากมีเงินใช้/เดือน</label><div class="in"><input id="p_expense" data-money value="30,000"><span class="u">บาท</span></div>
+        <div class="help">ราคาวันนี้ ระบบบวกเงินเฟ้อให้</div></div>
+      <div class="f"><label for="p_saved">เงินเก็บที่มีแล้ว</label><div class="in"><input id="p_saved" data-money value="500,000"><span class="u">บาท</span></div>
+        <div class="help">เงินฝาก กองทุน RMF ฯลฯ</div></div>
+    </div>
+    <details class="more">
+      <summary>ปรับสมมติฐาน (ไม่แก้ก็ได้)</summary>
+      <div class="f"><label for="p_inf">เงินเฟ้อ · ของแพงขึ้นปีละ</label>
+        <div class="stepper"><button type="button" data-step="p_inf" data-delta="-0.5" aria-label="ลด">−</button><div class="in"><input id="p_inf" data-num value="3"><span class="u">%</span></div><button type="button" data-step="p_inf" data-delta="0.5" aria-label="เพิ่ม">+</button></div>
+        <div class="help">ไทยเฉลี่ยราว 2–3% ต่อปี</div></div>
+      <div class="f"><label for="p_rpre">ผลตอบแทนช่วงออม</label><div class="in"><input id="p_rpre" data-num value="6"><span class="u">%/ปี</span></div>
+        <div class="chips" data-for="p_rpre"><button type="button" data-v="1.5">เงินฝาก 1.5%</button><button type="button" data-v="4">กองทุนผสม 4%</button><button type="button" data-v="6">หุ้น 6%</button></div></div>
+      <div class="f"><label for="p_rpost">ผลตอบแทนหลังเกษียณ</label><div class="in"><input id="p_rpost" data-num value="4"><span class="u">%/ปี</span></div>
+        <div class="chips" data-for="p_rpost"><button type="button" data-v="1.5">เงินฝาก 1.5%</button><button type="button" data-v="3">พันธบัตร 3%</button><button type="button" data-v="4">กองทุนผสม 4%</button></div></div>
+    </details>
+  </div>
+
+  <div class="results" id="p_res" aria-live="polite">
+    <div class="errbox" id="p_err"></div>
+    <div class="banner" id="p_banner"></div>
+    <div class="kpis">
+      <div class="card kpi main"><div class="k">ต้องออมเพิ่ม</div><div class="v" id="p_pmt"></div><div class="d" id="p_pmt_d"></div></div>
+      <div class="card kpi"><div class="k">เงินก้อนที่ต้องมีตอนเกษียณ</div><div class="v" id="p_need"></div><div class="d" id="p_need_d"></div></div>
+    </div>
+    <div class="cheer" id="p_cheer"></div>
+    <div class="card"><ul class="facts" id="p_facts"></ul></div>
+
+    <div class="card">
+      <h3>เงินเก็บตามอายุ</h3>
+      <p class="cap">ชี้ที่แท่งเพื่อดูตัวเลข</p>
+      <div class="chart-box"><canvas id="p_chart" role="img" aria-label="กราฟแท่งเงินเก็บตามอายุ"></canvas></div>
+      <div class="nochart" id="p_nochart">กราฟต้องใช้อินเทอร์เน็ต</div>
+      <div class="legend"><span><i style="background:var(--pre)"></i>ช่วงออมเงิน</span><span><i style="background:var(--pre-mid)"></i>ช่วงใช้เงินหลังเกษียณ</span></div>
+    </div>
+
+    <div class="card">
+      <h3>เงินก้อนมาจากไหน</h3>
+      <div class="comp" id="p_comp"></div>
+      <div class="comp-lg" id="p_comp_lg"></div>
+    </div>
+
+    <div class="card" id="p_alts_card">
+      <h3>อยากออมน้อยลง?</h3>
+      <p class="cap">ลองปรับแผนแบบนี้</p>
+      <div class="alts" id="p_alts"></div>
+    </div>
+
+    <div class="card">
+      <details class="data">
+        <summary>ตัวเลขละเอียด</summary>
+        <table class="kv">
+          <tr><td>ระยะเวลาออม</td><td id="p_r_n"></td></tr>
+          <tr><td>ระยะเวลาใช้เงินหลังเกษียณ</td><td id="p_r_m"></td></tr>
+          <tr><td>ค่าใช้จ่าย/เดือน ตอนเกษียณ</td><td id="p_r_exp"></td></tr>
+          <tr><td>เงินเก็บเดิม จะโตเป็น</td><td id="p_r_fv"></td></tr>
+          <tr><td>ส่วนที่ยังขาด</td><td id="p_r_gap"></td></tr>
+          <tr><td>เงินที่คุณออมเองรวม</td><td id="p_r_total"></td></tr>
+        </table>
+        <p class="note">ออมทุกสิ้นเดือนเท่ากัน ทบต้นรายเดือน · หลังเกษียณถอนใช้ทุกต้นเดือน ค่าใช้จ่ายเพิ่มตามเงินเฟ้อปีละครั้ง</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== เกษียณแล้ว ===================== -->
+<section class="panel" id="post">
+  <div class="ph"><div class="ic emo">🏖️</div><div><h2>เกษียณแล้ว</h2><p>เงินที่มีอยู่ พอใช้ถึงอายุเท่าไร</p></div></div>
+
+  <div class="card form">
+    <div class="row">
+      <div class="f"><label for="q_age">อายุตอนนี้</label><div class="in"><input id="q_age" data-num value="60"><span class="u">ปี</span></div></div>
+      <div class="f"><label for="q_life">อยากให้พอถึงอายุ</label><div class="in"><input id="q_life" data-num value="85"><span class="u">ปี</span></div></div>
+    </div>
+    <div class="row">
+      <div class="f"><label for="q_lump">เงินก้อนที่มี</label><div class="in"><input id="q_lump" data-money value="8,000,000"><span class="u">บาท</span></div></div>
+      <div class="f"><label for="q_expense">ใช้จ่าย/เดือน</label><div class="in"><input id="q_expense" data-money value="40,000"><span class="u">บาท</span></div></div>
+    </div>
+    <div class="f"><label for="q_pension">รายได้ประจำ/เดือน</label><div class="in"><input id="q_pension" data-money value="10,000"><span class="u">บาท</span></div>
+      <div class="help">บำนาญ ประกันสังคม ค่าเช่า ฯลฯ (ไม่มีใส่ 0)</div></div>
+    <label class="check"><input type="checkbox" id="q_pinf"> รายได้นี้ปรับขึ้นตามค่าครองชีพทุกปี</label>
+    <details class="more">
+      <summary>ปรับสมมติฐาน (ไม่แก้ก็ได้)</summary>
+      <div class="f"><label for="q_inf">เงินเฟ้อ · ของแพงขึ้นปีละ</label>
+        <div class="stepper"><button type="button" data-step="q_inf" data-delta="-0.5" aria-label="ลด">−</button><div class="in"><input id="q_inf" data-num value="3"><span class="u">%</span></div><button type="button" data-step="q_inf" data-delta="0.5" aria-label="เพิ่ม">+</button></div></div>
+      <div class="f"><label for="q_r">ผลตอบแทนเงินก้อน</label><div class="in"><input id="q_r" data-num value="4"><span class="u">%/ปี</span></div>
+        <div class="chips" data-for="q_r"><button type="button" data-v="1.5">เงินฝาก 1.5%</button><button type="button" data-v="3">พันธบัตร 3%</button><button type="button" data-v="4">กองทุนผสม 4%</button></div></div>
+    </details>
+  </div>
+
+  <div class="results" id="q_res" aria-live="polite">
+    <div class="errbox" id="q_err"></div>
+    <div class="banner" id="q_banner"></div>
+    <div class="kpis">
+      <div class="card kpi main"><div class="k">เงินพอใช้ถึงอายุ</div><div class="v" id="q_until"></div><div class="d" id="q_until_d"></div></div>
+      <div class="card kpi"><div class="k">ดึงจากเงินก้อน</div><div class="v" id="q_net"></div><div class="d">ปีแรก · เพิ่มขึ้นตามเงินเฟ้อ</div></div>
+    </div>
+    <div class="cheer" id="q_cheer"></div>
+    <div class="card"><ul class="facts" id="q_facts"></ul></div>
+
+    <div class="card">
+      <h3>เงินก้อนคงเหลือตามอายุ</h3>
+      <p class="cap">แท่งหายไปก่อนเส้นเป้าหมาย = เงินหมดก่อน · ชี้ที่แท่งเพื่อดูตัวเลข</p>
+      <div class="chart-box"><canvas id="q_chart" role="img" aria-label="กราฟแท่งเงินคงเหลือตามอายุ"></canvas></div>
+      <div class="nochart" id="q_nochart">กราฟต้องใช้อินเทอร์เน็ต</div>
+    </div>
+
+    <div class="card">
+      <details class="data">
+        <summary>ตารางรายปี</summary>
+        <div class="tbl-wrap"><table class="yr">
+          <thead><tr><th>อายุ</th><th>ใช้จ่าย/เดือน</th><th>รายได้/เดือน</th><th>เงินเหลือสิ้นปี</th></tr></thead>
+          <tbody id="q_tbody"></tbody>
+        </table></div>
+        <p class="note">ถอนส่วนที่รายได้ไม่พอจ่ายทุกต้นเดือน ทบต้นรายเดือน · ค่าใช้จ่ายเพิ่มตามเงินเฟ้อปีละครั้ง</p>
+      </details>
+    </div>
+  </div>
+</section>
+</main>
+
+<section class="gloss">
+  <h2>คำที่ควรรู้</h2>
+  <dl>
+    <div><dt><span class="emo">🛒</span> เงินเฟ้อ</dt><dd>ของแพงขึ้นทุกปี เงินเท่าเดิมจึงซื้อของได้น้อยลง</dd></div>
+    <div><dt><span class="emo">🌱</span> ผลตอบแทน</dt><dd>เงินที่งอกเพิ่มจากการฝากหรือลงทุน ยิ่งสูงยิ่งเสี่ยง</dd></div>
+    <div><dt><span class="emo">⛄</span> ทบต้น</dt><dd>ดอกผลงอกต่อเป็นดอกผล เหมือนก้อนหิมะ ยิ่งเริ่มเร็วยิ่งโตเร็ว</dd></div>
+  </dl>
+</section>
+
+<footer>เป็นการประมาณการเท่านั้น ไม่รับประกันผลตอบแทน ควรทบทวนแผนปีละครั้ง <span class="emo">💚</span></footer>
+</div>
+
+<script>
+/* ---------- ตัวช่วย ---------- */
+const fmt0 = new Intl.NumberFormat('th-TH', {maximumFractionDigits:0});
+const fmt1 = new Intl.NumberFormat('th-TH', {maximumFractionDigits:1});
+const baht = v => fmt0.format(Math.round(v)) + ' บาท';
+const short = v => {
+  const a = Math.abs(v);
+  if (a >= 1e6) return fmt1.format(v/1e6) + ' ล้าน';
+  if (a >= 1e4) return fmt0.format(Math.round(v/1e3) * 1e3);
+  return fmt0.format(Math.round(v));
+};
+const val = id => { const n = parseFloat(String(document.getElementById(id).value).replace(/,/g,'')); return isNaN(n) ? NaN : n; };
+const $ = id => document.getElementById(id);
+const set = (id, html) => $(id).innerHTML = html;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const mRate = pct => Math.pow(1 + pct/100, 1/12) - 1;
+
+/* ---------- คำคมให้กำลังใจ ---------- */
+const QUOTES = [
+  ['🌱','ออมวันละนิด อนาคตสบายใจ'],
+  ['🪺','ออมทีละนิด เหมือนนกน้อยสร้างรัง'],
+  ['☕','งดกาแฟแก้วเดียว = ก้าวแรกสู่เกษียณสบาย'],
+  ['🌈','เริ่มวันนี้ ดีกว่ารอพรุ่งนี้'],
+  ['💪','ตัวเราในอนาคต จะขอบคุณตัวเราวันนี้'],
+  ['🌻','เงินออมเติบโตได้ เหมือนต้นไม้ที่เรารดน้ำทุกวัน']
+];
+let qi = 0;
+setInterval(() => {
+  const q = $('quote'); q.style.opacity = 0;
+  setTimeout(() => { qi = (qi + 1) % QUOTES.length; q.innerHTML = '<span class="emo">' + QUOTES[qi][0] + '</span><span>' + QUOTES[qi][1] + '</span>'; q.style.opacity = 1; }, 400);
+}, 5000);
+
+/* ---------- ช่องกรอก ---------- */
+document.querySelectorAll('input[data-money]').forEach(el => {
+  el.setAttribute('inputmode','decimal');
+  el.addEventListener('input', () => {
+    const raw = el.value.replace(/[^\d.]/g,'');
+    const [i, ...d] = raw.split('.');
+    const pos = el.value.length - el.selectionStart;
+    let out = i ? fmt0.format(Number(i)) : '';
+    if (d.length) out += '.' + d.join('').slice(0,2);
+    el.value = out;
+    const p = Math.max(0, el.value.length - pos);
+    el.setSelectionRange(p, p);
+  });
+});
+document.querySelectorAll('input[data-num]').forEach(el => {
+  el.setAttribute('inputmode','decimal');
+  el.addEventListener('input', () => { el.value = el.value.replace(/[^\d.]/g,''); });
+});
+document.querySelectorAll('button[data-step]').forEach(b => b.addEventListener('click', () => {
+  const el = $(b.dataset.step);
+  el.value = String(Math.min(15, Math.max(0, Math.round(((parseFloat(el.value) || 0) + parseFloat(b.dataset.delta)) * 100) / 100)));
+  el.dispatchEvent(new Event('input', {bubbles:true}));
+}));
+document.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => {
+  const el = $(b.parentElement.dataset.for);
+  el.value = b.dataset.v;
+  el.dispatchEvent(new Event('input', {bubbles:true}));
+}));
+function syncChips(){
+  document.querySelectorAll('.chips').forEach(c => {
+    const v = val(c.dataset.for);
+    c.querySelectorAll('button').forEach(b => b.classList.toggle('on', parseFloat(b.dataset.v) === v));
+  });
+}
+const timers = {};
+['pre','post'].forEach(p => ['input','change'].forEach(ev => $(p).addEventListener(ev, () => {
+  syncChips();
+  if (p === 'pre') $('p_retire_out').innerHTML = $('p_retire').value + ' <small>ปี</small>';
+  clearTimeout(timers[p]);
+  timers[p] = setTimeout(p === 'pre' ? calcPre : calcPost, 120);
+})));
+
+function fail(k, msg){
+  $(k+'_res').classList.toggle('error', !!msg);
+  $(k+'_err').textContent = msg || '';
+  return !!msg;
+}
+
+function requiredFund(expM, penM, inf, r, years, penInf){
+  const i = mRate(r);
+  let pv = 0;
+  for (let y = 0; y < years; y++){
+    const e = expM * Math.pow(1+inf/100, y);
+    const p = penInf ? penM * Math.pow(1+inf/100, y) : penM;
+    const net = Math.max(0, e - p);
+    for (let m = 0; m < 12; m++) pv += net / Math.pow(1+i, 12*y + m);
+  }
+  return pv;
+}
+
+/* ---------- กราฟแท่ง ---------- */
+const charts = {};
+const hasChart = typeof Chart !== 'undefined';
+if (hasChart){
+  Chart.defaults.font.family = '"IBM Plex Sans Thai","Leelawadee UI",Tahoma,sans-serif';
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = '#64748b';
+}
+// เส้นตั้งประบอกอายุสำคัญ (index ของแท่ง)
+const markerPlugin = {
+  id: 'markers',
+  afterDatasetsDraw(chart, _a, opts){
+    const {ctx, chartArea:{top,bottom}, scales:{x}} = chart;
+    (opts.items || []).forEach(m => {
+      if (m.idx < 0 || m.idx >= chart.data.labels.length) return;
+      const px = x.getPixelForValue(m.idx) - (m.left ? x.width / chart.data.labels.length / 2 : 0);
+      ctx.save();
+      ctx.strokeStyle = m.color; ctx.lineWidth = 1.5; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(px, top); ctx.lineTo(px, bottom); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font = '600 12px "IBM Plex Sans Thai", Tahoma, sans-serif';
+      const w = ctx.measureText(m.label).width + 16;
+      const tx = Math.min(Math.max(px - w/2, x.left), x.right - w);
+      ctx.fillStyle = m.color;
+      ctx.beginPath(); ctx.roundRect(tx, top - 22, w, 20, 10); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.fillText(m.label, tx + 8, top - 8);
+      ctx.restore();
+    });
+  }
+};
+function drawBars(k, labels, data, colors, markers, seriesLabel){
+  $(k+'_nochart').style.display = hasChart ? 'none' : 'block';
+  $(k+'_chart').parentElement.style.display = hasChart ? 'block' : 'none';
+  if (!hasChart) return;
+  const ds = { label: seriesLabel, data, backgroundColor: colors, hoverBackgroundColor: colors,
+    borderRadius: {topLeft: 4, topRight: 4}, borderSkipped: 'bottom', barPercentage: .78, categoryPercentage: .92 };
+  if (charts[k]){
+    const c = charts[k];
+    c.data.labels = labels; c.data.datasets = [ds];
+    c.options.plugins.markers.items = markers;
+    c.update();
+    return;
+  }
+  charts[k] = new Chart($(k+'_chart'), {
+    type: 'bar',
+    data: { labels, datasets: [ds] },
+    plugins: [markerPlugin],
+    options: {
+      responsive: true, maintainAspectRatio: false, animation: {duration: 350},
+      interaction: { mode: 'index', intersect: false },
+      layout: { padding: { top: 26, right: 4 } },
+      scales: {
+        x: { grid: { display: false }, border: {color:'#e2e8f0'},
+             ticks: { autoSkip: false, maxRotation: 0, callback: function(v){ const a = this.getLabelForValue(v); return a % 5 === 0 ? a : ''; } } },
+        y: { beginAtZero: true, border: {display:false}, grid: { color: '#eef1f5' },
+             ticks: { callback: v => short(v), maxTicksLimit: 5 } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0f172a', padding: 10, cornerRadius: 10, displayColors: false,
+          titleFont: {weight: '600'},
+          callbacks: {
+            title: it => 'อายุ ' + it[0].label + ' ปี',
+            label: c => c.dataset.label + ': ' + (c.parsed.y <= 0 ? 'หมดแล้ว' : baht(c.parsed.y))
+          }
+        },
+        markers: { items: markers }
+      }
+    }
+  });
+}
+
+/* ---------- ยังทำงานอยู่ ---------- */
+function planPre(age, ret, exp, saved, inf, rPre, rPost, life){
+  const n = ret - age, m = life - ret;
+  const expAtRet = exp * Math.pow(1+inf/100, n);
+  const need = requiredFund(expAtRet, 0, inf, rPost, m, false);
+  const fvSaved = saved * Math.pow(1+rPre/100, n);
+  const gap = Math.max(0, need - fvSaved);
+  const i = mRate(rPre), N = n*12;
+  const pmt = gap <= 0 ? 0 : (i === 0 ? gap/N : gap * i / (Math.pow(1+i, N) - 1));
+  return {n, m, N, expAtRet, need, fvSaved, gap, pmt};
+}
+// เงินเก็บ ณ ต้นปีของแต่ละอายุ
+function simulatePre(age, ret, life, saved, pmt, expAtRet, inf, rPre, rPost){
+  const iPre = mRate(rPre), iPost = mRate(rPost);
+  let bal = saved, pts = [{age, y:bal}], emptyAt = null;
+  for (let a = age; a < ret; a++){
+    for (let k = 0; k < 12; k++) bal = bal * (1 + iPre) + pmt;
+    pts.push({age:a+1, y:bal});
+  }
+  for (let y = 0; ret + y < life; y++){
+    const e = expAtRet * Math.pow(1+inf/100, y);
+    for (let k = 0; k < 12; k++){
+      if (bal < e - 0.5 && emptyAt === null) emptyAt = ret + y + (k + bal/e)/12;
+      bal = Math.max(0, (bal - e) * (1 + iPost));
+    }
+    pts.push({age:ret+y+1, y:bal < 1 ? 0 : bal});
+  }
+  return {pts, emptyAt};
+}
+
+function calcPre(){
+  const age = val('p_age'), ret = val('p_retire'), exp = val('p_expense'), saved = val('p_saved') || 0;
+  const inf = val('p_inf'), rPre = val('p_rpre'), rPost = val('p_rpost'), life = val('p_life');
+  $('p_retire_box').classList.toggle('bad-f', !isNaN(age) && ret <= age);
+  if ([age,ret,exp,inf,rPre,rPost,life].some(isNaN)) return fail('p','กรอกข้อมูลให้ครบทุกช่อง');
+  if (ret <= age) return fail('p','อายุเกษียณต้องมากกว่าอายุตอนนี้');
+  if (life <= ret) return fail('p','อายุที่ใช้เงินถึง ต้องมากกว่าอายุเกษียณ');
+  fail('p','');
+
+  const P = planPre(age, ret, exp, saved, inf, rPre, rPost, life);
+  const pmtC = Math.ceil(P.pmt), contrib = pmtC * P.N;
+  const plan = simulatePre(age, ret, life, saved, pmtC, P.expAtRet, inf, rPre, rPost);
+  const none = pmtC > 0 ? simulatePre(age, ret, life, saved, 0, P.expAtRet, inf, rPre, rPost) : null;
+
+  const b = $('p_banner');
+  b.className = 'banner ' + (pmtC > 0 ? 'info' : 'good');
+  b.textContent = pmtC > 0 ? 'ออมเพิ่มเดือนละ ' + baht(pmtC) + ' ก็เกษียณได้ตามแผน' : 'เงินเก็บที่มีพอแล้ว ไม่ต้องออมเพิ่ม';
+
+  set('p_pmt', fmt0.format(pmtC) + '<small>บาท/เดือน</small>');
+  set('p_pmt_d', pmtC > 0 ? 'ทุกเดือน อีก ' + P.n + ' ปี' : 'เกินเป้า ' + short(P.fvSaved - P.need) + ' บาท');
+  set('p_need', short(P.need) + '<small>บาท</small>');
+  set('p_need_d', 'ตอนอายุ ' + ret);
+
+  const daily = Math.ceil(pmtC / 30);
+  set('p_cheer', pmtC > 0
+    ? '<span class="emo">🐦‍🔥</span><span>เฉลี่ยแค่ <b>วันละ ' + fmt0.format(daily) + ' บาท</b> ' +
+      (daily <= 100 ? 'น้อยกว่าค่าชานมไข่มุกแก้วเดียว! เริ่มได้เลยวันนี้' : 'หยอดกระปุกทุกวัน อนาคตสบายแน่นอน') + ' <span class="emo">💪</span></span>'
+    : '<span class="emo">🎉</span><span><b>เยี่ยมมาก!</b> คุณเตรียมตัวได้ดีแล้ว ออมต่ออีกนิดเพื่อเป็นเงินเผื่อ</span>');
+
+  const facts = [
+    'ของแพงขึ้นทุกปี: <b>' + fmt0.format(exp) + '</b> วันนี้ = <b>' + fmt0.format(Math.round(P.expAtRet)) + '</b> บาท/เดือน ตอนอายุ ' + ret,
+    'ต้องใช้เงินหลังเกษียณอีก <b>' + P.m + ' ปี</b> (อายุ ' + ret + '–' + life + ')'
+  ];
+  if (none && none.emptyAt !== null) facts.push('<span class="warn">ถ้าไม่ออมเพิ่ม เงินหมดตอนอายุ <b>' + fmt0.format(Math.floor(none.emptyAt)) + '</b></span>');
+  set('p_facts', facts.map(f => '<li><span>' + f + '</span></li>').join(''));
+
+  const pre = css('--pre'), preMid = css('--pre-mid');
+  drawBars('p', plan.pts.map(p => p.age), plan.pts.map(p => p.y),
+    plan.pts.map(p => p.age < ret ? pre : preMid),
+    [{idx: ret - age, left: true, label: 'เกษียณ ' + ret, color: pre}], 'เงินเก็บ');
+
+  const total = Math.max(P.need, P.fvSaved), growth = Math.max(0, total - saved - contrib);
+  const parts = [
+    {l:'เงินเก็บเดิม', v:saved, c:preMid},
+    {l:'เงินที่ออมเพิ่ม', v:contrib, c:pre},
+    {l:'ผลตอบแทนงอกเงย', v:growth, c:css('--gold')}
+  ].filter(p => p.v > 0);
+  const sum = parts.reduce((s,p) => s + p.v, 0) || 1;
+  set('p_comp', parts.map(p => '<div style="flex:' + p.v + ';background:' + p.c + '" title="' + p.l + '"></div>').join(''));
+  set('p_comp_lg', parts.map(p => '<div><i style="background:' + p.c + '"></i>' + p.l + '<b>' + short(p.v) + ' · ' + Math.round(p.v/sum*100) + '%</b></div>').join(''));
+
+  const alts = [];
+  if (pmtC > 0){
+    if (ret + 5 < life) alts.push(['เกษียณช้าลง 5 ปี (อายุ ' + (ret+5) + ')', planPre(age, ret+5, exp, saved, inf, rPre, rPost, life).pmt]);
+    alts.push(['ใช้จ่ายน้อยลง 20% (' + fmt0.format(exp*0.8) + '/เดือน)', planPre(age, ret, exp*0.8, saved, inf, rPre, rPost, life).pmt]);
+    if (rPre < 6) alts.push(['ลงทุนให้ได้ผลตอบแทน ' + fmt1.format(rPre+2) + '%', planPre(age, ret, exp, saved, inf, rPre+2, rPost, life).pmt]);
+  }
+  $('p_alts_card').style.display = alts.length ? '' : 'none';
+  set('p_alts', alts.map(([t, v]) => {
+    const vc = Math.ceil(v);
+    return '<div class="alt"><span>' + t + '</span><span class="r"><b>' + fmt0.format(vc) + '</b> บาท/เดือน<span>ลดลง ' + fmt0.format(pmtC - vc) + '</span></span></div>';
+  }).join(''));
+
+  set('p_r_n', P.n + ' ปี');
+  set('p_r_m', P.m + ' ปี');
+  set('p_r_exp', baht(P.expAtRet));
+  set('p_r_fv', baht(P.fvSaved));
+  set('p_r_gap', baht(P.gap));
+  set('p_r_total', baht(contrib));
+}
+
+/* ---------- เกษียณแล้ว ---------- */
+function calcPost(){
+  const age = val('q_age'), lump = val('q_lump'), exp = val('q_expense'), pen = val('q_pension') || 0;
+  const inf = val('q_inf'), r = val('q_r'), life = val('q_life');
+  const penInf = $('q_pinf').checked;
+  if ([age,lump,exp,inf,r,life].some(isNaN)) return fail('q','กรอกข้อมูลให้ครบทุกช่อง');
+  if (life <= age) return fail('q','อายุเป้าหมายต้องมากกว่าอายุตอนนี้');
+  fail('q','');
+
+  const MAX_AGE = 120, i = mRate(r);
+  let bal = lump, months = 0, depleted = false, rows = [];
+  for (let y = 0; age + y < MAX_AGE && !depleted; y++){
+    const e = exp * Math.pow(1+inf/100, y);
+    const p = penInf ? pen * Math.pow(1+inf/100, y) : pen;
+    const net = e - p;
+    for (let mo = 0; mo < 12; mo++){
+      if (net > 0 && bal < net){ depleted = true; months += bal / net; bal = 0; break; }
+      bal = (bal - net) * (1 + i);
+      months++;
+    }
+    rows.push({age: age + y, e, p, bal});
+  }
+  const untilAge = age + months/12;
+  const ok = !depleted || untilAge >= life;
+  const need = requiredFund(exp, pen, inf, r, life - age, penInf);
+  const diff = lump - need;
+  const net0 = exp - pen;
+
+  let lo = 0, hi = Math.max(exp, pen) * 4 + lump / 12;
+  for (let k = 0; k < 50; k++){ const mid = (lo + hi) / 2; requiredFund(mid, pen, inf, r, life - age, penInf) > lump ? hi = mid : lo = mid; }
+  const maxExp = Math.floor(lo / 100) * 100;
+
+  const b = $('q_banner');
+  b.className = 'banner ' + (ok ? 'good' : 'bad');
+  b.textContent = ok
+    ? 'พอใช้ถึงอายุ ' + life + (diff > 0 ? ' · เหลือเผื่อ ~' + short(diff) + ' บาท' : '')
+    : 'เงินหมดก่อนเป้าหมาย ' + fmt1.format(life - untilAge) + ' ปี';
+
+  if (depleted){
+    set('q_until', fmt0.format(Math.floor(untilAge)) + '<small>ปี</small>');
+    set('q_until_d', 'ใช้ได้อีก ' + Math.floor(months/12) + ' ปี ' + Math.floor(months % 12) + ' เดือน');
+  } else {
+    set('q_until', 'ตลอดชีวิต');
+    set('q_until_d', 'เงินไม่หมด');
+  }
+  set('q_net', net0 > 0 ? fmt0.format(Math.round(net0)) + '<small>บาท/เดือน</small>' : '0<small>บาท</small>');
+
+  set('q_cheer', ok
+    ? '<span class="emo">🌴</span><span><b>สบายใจได้!</b> เงินพอใช้ถึงอายุ ' + life + ' ไปเที่ยว ทำสิ่งที่รักได้เต็มที่</span>'
+    : '<span class="emo">🤗</span><span>ไม่ต้องกังวล ปรับนิดเดียวก็พอ ลดใช้จ่ายเหลือ <b>' + fmt0.format(maxExp) + ' บาท/เดือน</b> ก็พอถึงอายุ ' + life + ' แล้ว</span>');
+
+  const facts = [];
+  if (ok) facts.push('ใช้ได้สูงสุดราว <b>' + fmt0.format(maxExp) + '</b> บาท/เดือน ก็ยังพอถึงอายุ ' + life);
+  facts.push('เงินก้อนที่ควรมีเพื่อให้พอถึงอายุ ' + life + ': <b>' + short(need) + ' บาท</b>' +
+    (ok ? '' : ' <span class="warn">(ขาด ' + short(-diff) + ')</span>'));
+  facts.push('เงินก้อนงอก <b>' + fmt1.format(r) + '%</b>/ปี แต่ค่าใช้จ่ายก็แพงขึ้น <b>' + fmt1.format(inf) + '%</b>/ปี');
+  set('q_facts', facts.map(f => '<li><span>' + f + '</span></li>').join(''));
+
+  // เงิน ณ ต้นปีของแต่ละอายุ
+  const xMax = Math.max(life + 2, depleted ? Math.ceil(untilAge) + 2 : Math.min(MAX_AGE, life + 5));
+  const labels = [], data = [];
+  for (let a = age; a <= xMax; a++){
+    labels.push(a);
+    data.push(a === age ? lump : (rows[a - age - 1] ? Math.max(0, rows[a - age - 1].bal) : 0));
+  }
+  const post = css('--post'), postMid = css('--post-mid');
+  drawBars('q', labels, data, labels.map(a => a <= life ? post : postMid),
+    [{idx: life - age, label: 'เป้าหมาย ' + life, color: ok ? css('--good') : css('--bad')}], 'เงินคงเหลือ');
+
+  $('q_tbody').innerHTML = rows.map(rw =>
+    '<tr' + (rw.age === life - 1 ? ' class="hl"' : '') + '><td>' + rw.age + '</td><td>' + fmt0.format(Math.round(rw.e)) +
+    '</td><td>' + fmt0.format(Math.round(rw.p)) + '</td><td' + (rw.bal <= 0 ? ' class="neg"' : '') + '>' +
+    (rw.bal <= 0 ? 'หมด' : fmt0.format(Math.round(rw.bal))) + '</td></tr>').join('');
+}
+
+syncChips();
+calcPre();
+calcPost();
+</script>
+</body>
+</html>
