@@ -38,9 +38,16 @@
   @keyframes drop{0%{transform:translate(-50%,-10px);opacity:0}15%{opacity:1}55%{transform:translate(-50%,38px);opacity:1}70%,100%{transform:translate(-50%,44px);opacity:0}}
   @keyframes twinkle{0%,100%{transform:scale(.7);opacity:.4}50%{transform:scale(1.1);opacity:1}}
   @media (prefers-reduced-motion:reduce){.pig,.coin,.spark{animation:none}.coin{opacity:0}}
-  @media (max-width:560px){.hero-head{padding:22px 20px;flex-direction:column-reverse;text-align:center}.mascot{height:110px}.pig{font-size:76px}}
-  .print{position:absolute;top:14px;right:16px;z-index:2;background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:10px;padding:5px 12px;font:inherit;font-size:.82rem;color:var(--ink2);cursor:pointer}
-  @media (max-width:560px){.print{display:none}}
+  @media (max-width:560px){.hero-head{padding:56px 20px 22px;flex-direction:column-reverse;text-align:center}.mascot{height:110px}.pig{font-size:76px}}
+
+  /* Tools: language toggle + print */
+  .tools{position:absolute;top:14px;right:16px;z-index:2;display:flex;gap:8px;align-items:center}
+  .lang{display:flex;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .lang button{border:0;background:transparent;border-radius:999px;padding:4px 12px;font:inherit;font-size:.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+  .lang button[aria-pressed=true]{background:var(--ink);color:#fff}
+  .lang button:focus-visible{outline:2px solid var(--pre);outline-offset:1px}
+  .print{background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font:inherit;font-size:.82rem;color:var(--ink2);cursor:pointer}
+  @media (max-width:560px){.print{display:none}.tools{left:0;right:0;justify-content:center}}
 
   /* ---------- แท็บ ---------- */
   .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#e7ebf1;padding:6px;border-radius:18px;margin-bottom:20px}
@@ -56,14 +63,14 @@
   @media (max-width:520px){.tab small{display:none}.tab{padding:8px 10px;gap:8px}.tab .ic{width:34px;height:34px;font-size:18px}}
 
   /* ---------- ส่วนเนื้อหา: ฟอร์มซ้าย ผลลัพธ์ขวา ---------- */
-  .panel{--accent:var(--pre);--soft:var(--pre-soft);--mid:var(--pre-mid);display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start;min-width:0}
+  .panel{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start;min-width:0}
   .panel[hidden]{display:none}
   #tab-pre,#pre{--accent:var(--pre);--soft:var(--pre-soft);--mid:var(--pre-mid)}
   #tab-post,#post{--accent:var(--post);--soft:var(--post-soft);--mid:var(--post-mid)}
   .panel > .ph{display:none}
   .panel > .form{position:sticky;top:16px}
   @media (max-width:900px){.panel{grid-template-columns:1fr}.panel > .form{position:static}}
-  .ph{display:flex;align-items:center;gap:12px;padding:4px 4px 0}
+  .ph{align-items:center;gap:12px;padding:4px 4px 0}
   .ph .ic{flex:none;width:48px;height:48px;border-radius:14px;background:var(--soft);display:grid;place-items:center;font-size:26px}
   .ph h2{margin:0;font-size:1.25rem;color:var(--accent);line-height:1.3}
   .ph p{margin:0;font-size:.88rem;color:var(--muted)}
@@ -77,7 +84,7 @@
   .f label{display:block;font-size:.86rem;font-weight:500;color:var(--ink2);margin-bottom:5px}
   .help{font-size:.76rem;color:var(--muted);margin-top:4px}
   .in{position:relative}
-  .in input{width:100%;padding:10px 48px 10px 12px;border:1.5px solid transparent;border-radius:12px;background:var(--field);font:inherit;font-weight:600;font-size:1rem;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums;transition:border-color .15s,background .15s}
+  .in input{width:100%;padding:10px 52px 10px 12px;border:1.5px solid transparent;border-radius:12px;background:var(--field);font:inherit;font-weight:600;font-size:1rem;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums;transition:border-color .15s,background .15s}
   .in input:hover{border-color:var(--line)}
   .in input:focus{outline:none;border-color:var(--accent);background:#fff}
   .in .u{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.8rem;pointer-events:none}
@@ -95,7 +102,7 @@
   .chips button:hover{border-color:var(--accent);color:var(--accent)}
   .chips button.on{background:var(--accent);border-color:var(--accent);color:#fff}
   .check{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;color:var(--ink2);cursor:pointer;margin:-2px 0 14px}
-  .check input{accent-color:var(--accent);width:18px;height:18px;margin:2px 0 0}
+  .check input{accent-color:var(--accent);width:18px;height:18px;margin:2px 0 0;flex:none}
   .bad-f input[type=range]{accent-color:var(--bad)} .bad-f output{color:var(--bad)!important}
   details.more{border-top:1px solid var(--line);margin:2px -20px -20px;padding:0 20px}
   details.more summary{list-style:none;cursor:pointer;padding:13px 0;font-size:.86rem;font-weight:500;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
@@ -169,7 +176,7 @@
   footer{padding:8px 0 36px;color:var(--muted);font-size:.8rem;text-align:center}
 
   @media print{
-    body{background:#fff} .print,.chips,.stepper button,.mascot{display:none}
+    body{background:#fff} .tools,.chips,.stepper button,.mascot{display:none}
     .tabs{display:none} .panel[hidden],.panel{display:grid;grid-template-columns:1fr;break-inside:avoid;margin-bottom:24px}
     .panel > .ph{display:flex} .panel > .form{position:static}
     .card,.hero-head{box-shadow:none;border:1px solid var(--line)} .tbl-wrap{max-height:none}
@@ -180,11 +187,17 @@
 <div class="wrap">
 
 <header class="hero-head">
-  <button class="print" onclick="window.print()">พิมพ์ / PDF</button>
+  <div class="tools">
+    <div class="lang" role="group" aria-label="Language / ภาษา">
+      <button type="button" data-lang="th" aria-pressed="true">ไทย</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button class="print" onclick="window.print()" data-i18n="print">พิมพ์ / PDF</button>
+  </div>
   <div class="txt">
-    <h1>วางแผนเกษียณ <span class="by">by Nok SAKUNA</span></h1>
-    <p>กรอกตัวเลขไม่กี่ช่อง รู้ทันทีว่าต้องเก็บเท่าไร และเงินพอใช้ไหม</p>
-    <div class="quote" id="quote"><span class="emo">🌱</span><span>ออมวันละนิด อนาคตสบายใจ</span></div>
+    <h1><span data-i18n="title">วางแผนเกษียณ</span> <span class="by">by Nok SAKUNA</span></h1>
+    <p data-i18n="subtitle">กรอกตัวเลขไม่กี่ช่อง รู้ทันทีว่าต้องเก็บเท่าไร และเงินพอใช้ไหม</p>
+    <div class="quote" id="quote"></div>
   </div>
   <div class="mascot" aria-hidden="true">
     <span class="emo spark s1">✨</span><span class="emo spark s2">💖</span><span class="emo spark s3">⭐</span>
@@ -193,41 +206,41 @@
   </div>
 </header>
 
-<div class="tabs" role="tablist" aria-label="เลือกส่วน">
-  <button class="tab" id="tab-pre" role="tab" aria-selected="true" aria-controls="pre"><span class="ic emo">💼</span><span><b>ยังทำงานอยู่</b><small>ต้องออมเดือนละเท่าไร</small></span></button>
-  <button class="tab" id="tab-post" role="tab" aria-selected="false" aria-controls="post" tabindex="-1"><span class="ic emo">🏖️</span><span><b>เกษียณแล้ว</b><small>เงินที่มีพอใช้ถึงเมื่อไร</small></span></button>
+<div class="tabs" role="tablist" data-i18n-aria="tabsAria">
+  <button class="tab" id="tab-pre" role="tab" aria-selected="true" aria-controls="pre"><span class="ic emo">💼</span><span><b data-i18n="tabPre"></b><small data-i18n="tabPreSub"></small></span></button>
+  <button class="tab" id="tab-post" role="tab" aria-selected="false" aria-controls="post" tabindex="-1"><span class="ic emo">🏖️</span><span><b data-i18n="tabPost"></b><small data-i18n="tabPostSub"></small></span></button>
 </div>
 
 <main>
 <!-- ===================== ยังทำงานอยู่ ===================== -->
 <section class="panel" id="pre" role="tabpanel" aria-labelledby="tab-pre">
-  <div class="ph"><div class="ic emo">💼</div><div><h2>ยังทำงานอยู่</h2><p>ต้องออมเดือนละเท่าไร ถึงจะเกษียณได้สบาย</p></div></div>
+  <div class="ph"><div class="ic emo">💼</div><div><h2 data-i18n="tabPre"></h2><p data-i18n="phPre"></p></div></div>
 
   <div class="card form">
     <div class="row">
-      <div class="f"><label for="p_age">อายุตอนนี้</label><div class="in"><input id="p_age" data-num value="35"><span class="u">ปี</span></div></div>
-      <div class="f"><label for="p_life">ใช้เงินถึงอายุ</label><div class="in"><input id="p_life" data-num value="85"><span class="u">ปี</span></div></div>
+      <div class="f"><label for="p_age" data-i18n="age"></label><div class="in"><input id="p_age" data-num value="35"><span class="u" data-i18n="uYr"></span></div></div>
+      <div class="f"><label for="p_life" data-i18n="lifePre"></label><div class="in"><input id="p_life" data-num value="85"><span class="u" data-i18n="uYr"></span></div></div>
     </div>
     <div class="f" id="p_retire_box">
-      <div class="slider-head"><label for="p_retire">เกษียณตอนอายุ</label><output id="p_retire_out">60 <small>ปี</small></output></div>
+      <div class="slider-head"><label for="p_retire" data-i18n="retire"></label><output id="p_retire_out"></output></div>
       <input type="range" id="p_retire" min="30" max="80" step="1" value="60">
       <div class="scale"><span>30</span><span>40</span><span>50</span><span>60</span><span>70</span><span>80</span></div>
     </div>
     <div class="row">
-      <div class="f"><label for="p_expense">อยากมีเงินใช้/เดือน</label><div class="in"><input id="p_expense" data-money value="30,000"><span class="u">บาท</span></div>
-        <div class="help">ราคาวันนี้ ระบบบวกเงินเฟ้อให้</div></div>
-      <div class="f"><label for="p_saved">เงินเก็บที่มีแล้ว</label><div class="in"><input id="p_saved" data-money value="500,000"><span class="u">บาท</span></div>
-        <div class="help">เงินฝาก กองทุน RMF ฯลฯ</div></div>
+      <div class="f"><label for="p_expense" data-i18n="expPre"></label><div class="in"><input id="p_expense" data-money value="30,000"><span class="u" data-i18n="uBaht"></span></div>
+        <div class="help" data-i18n="expPreHelp"></div></div>
+      <div class="f"><label for="p_saved" data-i18n="saved"></label><div class="in"><input id="p_saved" data-money value="500,000"><span class="u" data-i18n="uBaht"></span></div>
+        <div class="help" data-i18n="savedHelp"></div></div>
     </div>
     <details class="more">
-      <summary>ปรับสมมติฐาน (ไม่แก้ก็ได้)</summary>
-      <div class="f"><label for="p_inf">เงินเฟ้อ · ของแพงขึ้นปีละ</label>
-        <div class="stepper"><button type="button" data-step="p_inf" data-delta="-0.5" aria-label="ลด">−</button><div class="in"><input id="p_inf" data-num value="3"><span class="u">%</span></div><button type="button" data-step="p_inf" data-delta="0.5" aria-label="เพิ่ม">+</button></div>
-        <div class="help">ไทยเฉลี่ยราว 2–3% ต่อปี</div></div>
-      <div class="f"><label for="p_rpre">ผลตอบแทนช่วงออม</label><div class="in"><input id="p_rpre" data-num value="6"><span class="u">%/ปี</span></div>
-        <div class="chips" data-for="p_rpre"><button type="button" data-v="1.5">เงินฝาก 1.5%</button><button type="button" data-v="4">กองทุนผสม 4%</button><button type="button" data-v="6">หุ้น 6%</button></div></div>
-      <div class="f"><label for="p_rpost">ผลตอบแทนหลังเกษียณ</label><div class="in"><input id="p_rpost" data-num value="4"><span class="u">%/ปี</span></div>
-        <div class="chips" data-for="p_rpost"><button type="button" data-v="1.5">เงินฝาก 1.5%</button><button type="button" data-v="3">พันธบัตร 3%</button><button type="button" data-v="4">กองทุนผสม 4%</button></div></div>
+      <summary data-i18n="more"></summary>
+      <div class="f"><label for="p_inf" data-i18n="inf"></label>
+        <div class="stepper"><button type="button" data-step="p_inf" data-delta="-0.5" data-i18n-aria="less">−</button><div class="in"><input id="p_inf" data-num value="3"><span class="u">%</span></div><button type="button" data-step="p_inf" data-delta="0.5" data-i18n-aria="more_">+</button></div>
+        <div class="help" data-i18n="infHelp"></div></div>
+      <div class="f"><label for="p_rpre" data-i18n="rPre"></label><div class="in"><input id="p_rpre" data-num value="6"><span class="u" data-i18n="uPctYr"></span></div>
+        <div class="chips" data-for="p_rpre"><button type="button" data-v="1.5"><span data-i18n="cDeposit"></span> 1.5%</button><button type="button" data-v="4"><span data-i18n="cMixed"></span> 4%</button><button type="button" data-v="6"><span data-i18n="cStocks"></span> 6%</button></div></div>
+      <div class="f"><label for="p_rpost" data-i18n="rPost"></label><div class="in"><input id="p_rpost" data-num value="4"><span class="u" data-i18n="uPctYr"></span></div>
+        <div class="chips" data-for="p_rpost"><button type="button" data-v="1.5"><span data-i18n="cDeposit"></span> 1.5%</button><button type="button" data-v="3"><span data-i18n="cBonds"></span> 3%</button><button type="button" data-v="4"><span data-i18n="cMixed"></span> 4%</button></div></div>
     </details>
   </div>
 
@@ -235,44 +248,44 @@
     <div class="errbox" id="p_err"></div>
     <div class="banner" id="p_banner"></div>
     <div class="kpis">
-      <div class="card kpi main"><div class="k">ต้องออมเพิ่ม</div><div class="v" id="p_pmt"></div><div class="d" id="p_pmt_d"></div></div>
-      <div class="card kpi"><div class="k">เงินก้อนที่ต้องมีตอนเกษียณ</div><div class="v" id="p_need"></div><div class="d" id="p_need_d"></div></div>
+      <div class="card kpi main"><div class="k" data-i18n="kPmt"></div><div class="v" id="p_pmt"></div><div class="d" id="p_pmt_d"></div></div>
+      <div class="card kpi"><div class="k" data-i18n="kNeed"></div><div class="v" id="p_need"></div><div class="d" id="p_need_d"></div></div>
     </div>
     <div class="cheer" id="p_cheer"></div>
     <div class="card"><ul class="facts" id="p_facts"></ul></div>
 
     <div class="card">
-      <h3>เงินเก็บตามอายุ</h3>
-      <p class="cap">ชี้ที่แท่งเพื่อดูตัวเลข</p>
-      <div class="chart-box"><canvas id="p_chart" role="img" aria-label="กราฟแท่งเงินเก็บตามอายุ"></canvas></div>
-      <div class="nochart" id="p_nochart">กราฟต้องใช้อินเทอร์เน็ต</div>
-      <div class="legend"><span><i style="background:var(--pre)"></i>ช่วงออมเงิน</span><span><i style="background:var(--pre-mid)"></i>ช่วงใช้เงินหลังเกษียณ</span></div>
+      <h3 data-i18n="chartPre"></h3>
+      <p class="cap" data-i18n="capHover"></p>
+      <div class="chart-box"><canvas id="p_chart" role="img" data-i18n-aria="chartPre"></canvas></div>
+      <div class="nochart" id="p_nochart" data-i18n="noChart"></div>
+      <div class="legend"><span><i style="background:var(--pre)"></i><span data-i18n="lgSave"></span></span><span><i style="background:var(--pre-mid)"></i><span data-i18n="lgSpend"></span></span></div>
     </div>
 
     <div class="card">
-      <h3>เงินก้อนมาจากไหน</h3>
+      <h3 data-i18n="compT"></h3>
       <div class="comp" id="p_comp"></div>
       <div class="comp-lg" id="p_comp_lg"></div>
     </div>
 
     <div class="card" id="p_alts_card">
-      <h3>อยากออมน้อยลง?</h3>
-      <p class="cap">ลองปรับแผนแบบนี้</p>
+      <h3 data-i18n="altsT"></h3>
+      <p class="cap" data-i18n="altsCap"></p>
       <div class="alts" id="p_alts"></div>
     </div>
 
     <div class="card">
       <details class="data">
-        <summary>ตัวเลขละเอียด</summary>
+        <summary data-i18n="dataT"></summary>
         <table class="kv">
-          <tr><td>ระยะเวลาออม</td><td id="p_r_n"></td></tr>
-          <tr><td>ระยะเวลาใช้เงินหลังเกษียณ</td><td id="p_r_m"></td></tr>
-          <tr><td>ค่าใช้จ่าย/เดือน ตอนเกษียณ</td><td id="p_r_exp"></td></tr>
-          <tr><td>เงินเก็บเดิม จะโตเป็น</td><td id="p_r_fv"></td></tr>
-          <tr><td>ส่วนที่ยังขาด</td><td id="p_r_gap"></td></tr>
-          <tr><td>เงินที่คุณออมเองรวม</td><td id="p_r_total"></td></tr>
+          <tr><td data-i18n="rN"></td><td id="p_r_n"></td></tr>
+          <tr><td data-i18n="rM"></td><td id="p_r_m"></td></tr>
+          <tr><td data-i18n="rExp"></td><td id="p_r_exp"></td></tr>
+          <tr><td data-i18n="rFv"></td><td id="p_r_fv"></td></tr>
+          <tr><td data-i18n="rGap"></td><td id="p_r_gap"></td></tr>
+          <tr><td data-i18n="rTotal"></td><td id="p_r_total"></td></tr>
         </table>
-        <p class="note">ออมทุกสิ้นเดือนเท่ากัน ทบต้นรายเดือน · หลังเกษียณถอนใช้ทุกต้นเดือน ค่าใช้จ่ายเพิ่มตามเงินเฟ้อปีละครั้ง</p>
+        <p class="note" data-i18n="notePre"></p>
       </details>
     </div>
   </div>
@@ -280,26 +293,26 @@
 
 <!-- ===================== เกษียณแล้ว ===================== -->
 <section class="panel" id="post" role="tabpanel" aria-labelledby="tab-post" hidden>
-  <div class="ph"><div class="ic emo">🏖️</div><div><h2>เกษียณแล้ว</h2><p>เงินที่มีอยู่ พอใช้ถึงอายุเท่าไร</p></div></div>
+  <div class="ph"><div class="ic emo">🏖️</div><div><h2 data-i18n="tabPost"></h2><p data-i18n="phPost"></p></div></div>
 
   <div class="card form">
     <div class="row">
-      <div class="f"><label for="q_age">อายุตอนนี้</label><div class="in"><input id="q_age" data-num value="60"><span class="u">ปี</span></div></div>
-      <div class="f"><label for="q_life">อยากให้พอถึงอายุ</label><div class="in"><input id="q_life" data-num value="85"><span class="u">ปี</span></div></div>
+      <div class="f"><label for="q_age" data-i18n="age"></label><div class="in"><input id="q_age" data-num value="60"><span class="u" data-i18n="uYr"></span></div></div>
+      <div class="f"><label for="q_life" data-i18n="lifePost"></label><div class="in"><input id="q_life" data-num value="85"><span class="u" data-i18n="uYr"></span></div></div>
     </div>
     <div class="row">
-      <div class="f"><label for="q_lump">เงินก้อนที่มี</label><div class="in"><input id="q_lump" data-money value="8,000,000"><span class="u">บาท</span></div></div>
-      <div class="f"><label for="q_expense">ใช้จ่าย/เดือน</label><div class="in"><input id="q_expense" data-money value="40,000"><span class="u">บาท</span></div></div>
+      <div class="f"><label for="q_lump" data-i18n="lump"></label><div class="in"><input id="q_lump" data-money value="8,000,000"><span class="u" data-i18n="uBaht"></span></div></div>
+      <div class="f"><label for="q_expense" data-i18n="expPost"></label><div class="in"><input id="q_expense" data-money value="40,000"><span class="u" data-i18n="uBaht"></span></div></div>
     </div>
-    <div class="f"><label for="q_pension">รายได้ประจำ/เดือน</label><div class="in"><input id="q_pension" data-money value="10,000"><span class="u">บาท</span></div>
-      <div class="help">บำนาญ ประกันสังคม ค่าเช่า ฯลฯ (ไม่มีใส่ 0)</div></div>
-    <label class="check"><input type="checkbox" id="q_pinf"> รายได้นี้ปรับขึ้นตามค่าครองชีพทุกปี</label>
+    <div class="f"><label for="q_pension" data-i18n="pension"></label><div class="in"><input id="q_pension" data-money value="10,000"><span class="u" data-i18n="uBaht"></span></div>
+      <div class="help" data-i18n="pensionHelp"></div></div>
+    <label class="check"><input type="checkbox" id="q_pinf"> <span data-i18n="pinf"></span></label>
     <details class="more">
-      <summary>ปรับสมมติฐาน (ไม่แก้ก็ได้)</summary>
-      <div class="f"><label for="q_inf">เงินเฟ้อ · ของแพงขึ้นปีละ</label>
-        <div class="stepper"><button type="button" data-step="q_inf" data-delta="-0.5" aria-label="ลด">−</button><div class="in"><input id="q_inf" data-num value="3"><span class="u">%</span></div><button type="button" data-step="q_inf" data-delta="0.5" aria-label="เพิ่ม">+</button></div></div>
-      <div class="f"><label for="q_r">ผลตอบแทนเงินก้อน</label><div class="in"><input id="q_r" data-num value="4"><span class="u">%/ปี</span></div>
-        <div class="chips" data-for="q_r"><button type="button" data-v="1.5">เงินฝาก 1.5%</button><button type="button" data-v="3">พันธบัตร 3%</button><button type="button" data-v="4">กองทุนผสม 4%</button></div></div>
+      <summary data-i18n="more"></summary>
+      <div class="f"><label for="q_inf" data-i18n="inf"></label>
+        <div class="stepper"><button type="button" data-step="q_inf" data-delta="-0.5" data-i18n-aria="less">−</button><div class="in"><input id="q_inf" data-num value="3"><span class="u">%</span></div><button type="button" data-step="q_inf" data-delta="0.5" data-i18n-aria="more_">+</button></div></div>
+      <div class="f"><label for="q_r" data-i18n="rLump"></label><div class="in"><input id="q_r" data-num value="4"><span class="u" data-i18n="uPctYr"></span></div>
+        <div class="chips" data-for="q_r"><button type="button" data-v="1.5"><span data-i18n="cDeposit"></span> 1.5%</button><button type="button" data-v="3"><span data-i18n="cBonds"></span> 3%</button><button type="button" data-v="4"><span data-i18n="cMixed"></span> 4%</button></div></div>
     </details>
   </div>
 
@@ -307,27 +320,27 @@
     <div class="errbox" id="q_err"></div>
     <div class="banner" id="q_banner"></div>
     <div class="kpis">
-      <div class="card kpi main"><div class="k">เงินพอใช้ถึงอายุ</div><div class="v" id="q_until"></div><div class="d" id="q_until_d"></div></div>
-      <div class="card kpi"><div class="k">ดึงจากเงินก้อน</div><div class="v" id="q_net"></div><div class="d">ปีแรก · เพิ่มขึ้นตามเงินเฟ้อ</div></div>
+      <div class="card kpi main"><div class="k" data-i18n="kUntil"></div><div class="v" id="q_until"></div><div class="d" id="q_until_d"></div></div>
+      <div class="card kpi"><div class="k" data-i18n="kNet"></div><div class="v" id="q_net"></div><div class="d" data-i18n="kNetD"></div></div>
     </div>
     <div class="cheer" id="q_cheer"></div>
     <div class="card"><ul class="facts" id="q_facts"></ul></div>
 
     <div class="card">
-      <h3>เงินก้อนคงเหลือตามอายุ</h3>
-      <p class="cap">แท่งหายไปก่อนเส้นเป้าหมาย = เงินหมดก่อน · ชี้ที่แท่งเพื่อดูตัวเลข</p>
-      <div class="chart-box"><canvas id="q_chart" role="img" aria-label="กราฟแท่งเงินคงเหลือตามอายุ"></canvas></div>
-      <div class="nochart" id="q_nochart">กราฟต้องใช้อินเทอร์เน็ต</div>
+      <h3 data-i18n="chartPost"></h3>
+      <p class="cap" data-i18n="capPost"></p>
+      <div class="chart-box"><canvas id="q_chart" role="img" data-i18n-aria="chartPost"></canvas></div>
+      <div class="nochart" id="q_nochart" data-i18n="noChart"></div>
     </div>
 
     <div class="card">
       <details class="data">
-        <summary>ตารางรายปี</summary>
+        <summary data-i18n="tableT"></summary>
         <div class="tbl-wrap"><table class="yr">
-          <thead><tr><th>อายุ</th><th>ใช้จ่าย/เดือน</th><th>รายได้/เดือน</th><th>เงินเหลือสิ้นปี</th></tr></thead>
+          <thead><tr><th data-i18n="thAge"></th><th data-i18n="thExp"></th><th data-i18n="thInc"></th><th data-i18n="thBal"></th></tr></thead>
           <tbody id="q_tbody"></tbody>
         </table></div>
-        <p class="note">ถอนส่วนที่รายได้ไม่พอจ่ายทุกต้นเดือน ทบต้นรายเดือน · ค่าใช้จ่ายเพิ่มตามเงินเฟ้อปีละครั้ง</p>
+        <p class="note" data-i18n="notePost"></p>
       </details>
     </div>
   </div>
@@ -335,25 +348,188 @@
 </main>
 
 <section class="gloss">
-  <h2>คำที่ควรรู้</h2>
+  <h2 data-i18n="glossT"></h2>
   <dl>
-    <div><dt><span class="emo">🛒</span> เงินเฟ้อ</dt><dd>ของแพงขึ้นทุกปี เงินเท่าเดิมจึงซื้อของได้น้อยลง</dd></div>
-    <div><dt><span class="emo">🌱</span> ผลตอบแทน</dt><dd>เงินที่งอกเพิ่มจากการฝากหรือลงทุน ยิ่งสูงยิ่งเสี่ยง</dd></div>
-    <div><dt><span class="emo">⛄</span> ทบต้น</dt><dd>ดอกผลงอกต่อเป็นดอกผล เหมือนก้อนหิมะ ยิ่งเริ่มเร็วยิ่งโตเร็ว</dd></div>
+    <div><dt><span class="emo">🛒</span> <span data-i18n="gInfT"></span></dt><dd data-i18n="gInf"></dd></div>
+    <div><dt><span class="emo">🌱</span> <span data-i18n="gRetT"></span></dt><dd data-i18n="gRet"></dd></div>
+    <div><dt><span class="emo">⛄</span> <span data-i18n="gCompT"></span></dt><dd data-i18n="gComp"></dd></div>
   </dl>
 </section>
 
-<footer>เป็นการประมาณการเท่านั้น ไม่รับประกันผลตอบแทน ควรทบทวนแผนปีละครั้ง <span class="emo">💚</span></footer>
+<footer><span data-i18n="footer"></span> <span class="emo">💚</span></footer>
 </div>
 
 <script>
+/* =====================================================================
+   ข้อความ 2 ภาษา (ไทย / English)
+   ===================================================================== */
+const I18N = {
+  th: {
+    docTitle: 'วางแผนเกษียณ by Nok SAKUNA',
+    title: 'วางแผนเกษียณ',
+    subtitle: 'กรอกตัวเลขไม่กี่ช่อง รู้ทันทีว่าต้องเก็บเท่าไร และเงินพอใช้ไหม',
+    print: 'พิมพ์ / PDF',
+    tabsAria: 'เลือกส่วน',
+    tabPre: 'ยังทำงานอยู่', tabPreSub: 'ต้องออมเดือนละเท่าไร',
+    tabPost: 'เกษียณแล้ว', tabPostSub: 'เงินที่มีพอใช้ถึงเมื่อไร',
+    phPre: 'ต้องออมเดือนละเท่าไร ถึงจะเกษียณได้สบาย', phPost: 'เงินที่มีอยู่ พอใช้ถึงอายุเท่าไร',
+    age: 'อายุตอนนี้', lifePre: 'ใช้เงินถึงอายุ', lifePost: 'อยากให้พอถึงอายุ', retire: 'เกษียณตอนอายุ',
+    expPre: 'อยากมีเงินใช้/เดือน', expPreHelp: 'ราคาวันนี้ ระบบบวกเงินเฟ้อให้',
+    saved: 'เงินเก็บที่มีแล้ว', savedHelp: 'เงินฝาก กองทุน RMF ฯลฯ',
+    more: 'ปรับสมมติฐาน (ไม่แก้ก็ได้)',
+    inf: 'เงินเฟ้อ · ของแพงขึ้นปีละ', infHelp: 'ไทยเฉลี่ยราว 2–3% ต่อปี',
+    rPre: 'ผลตอบแทนช่วงออม', rPost: 'ผลตอบแทนหลังเกษียณ', rLump: 'ผลตอบแทนเงินก้อน',
+    cDeposit: 'เงินฝาก', cMixed: 'กองทุนผสม', cStocks: 'หุ้น', cBonds: 'พันธบัตร',
+    less: 'ลด', more_: 'เพิ่ม',
+    uYr: 'ปี', uBaht: 'บาท', uPctYr: '%/ปี',
+    lump: 'เงินก้อนที่มี', expPost: 'ใช้จ่าย/เดือน', pension: 'รายได้ประจำ/เดือน',
+    pensionHelp: 'บำนาญ ประกันสังคม ค่าเช่า ฯลฯ (ไม่มีใส่ 0)', pinf: 'รายได้นี้ปรับขึ้นตามค่าครองชีพทุกปี',
+    kPmt: 'ต้องออมเพิ่ม', kNeed: 'เงินก้อนที่ต้องมีตอนเกษียณ',
+    chartPre: 'เงินเก็บตามอายุ', capHover: 'ชี้ที่แท่งเพื่อดูตัวเลข', noChart: 'กราฟต้องใช้อินเทอร์เน็ต',
+    lgSave: 'ช่วงออมเงิน', lgSpend: 'ช่วงใช้เงินหลังเกษียณ',
+    compT: 'เงินก้อนมาจากไหน', altsT: 'อยากออมน้อยลง?', altsCap: 'ลองปรับแผนแบบนี้',
+    dataT: 'ตัวเลขละเอียด',
+    rN: 'ระยะเวลาออม', rM: 'ระยะเวลาใช้เงินหลังเกษียณ', rExp: 'ค่าใช้จ่าย/เดือน ตอนเกษียณ',
+    rFv: 'เงินเก็บเดิม จะโตเป็น', rGap: 'ส่วนที่ยังขาด', rTotal: 'เงินที่คุณออมเองรวม',
+    notePre: 'ออมทุกสิ้นเดือนเท่ากัน ทบต้นรายเดือน · หลังเกษียณถอนใช้ทุกต้นเดือน ค่าใช้จ่ายเพิ่มตามเงินเฟ้อปีละครั้ง',
+    kUntil: 'เงินพอใช้ถึงอายุ', kNet: 'ดึงจากเงินก้อน', kNetD: 'ปีแรก · เพิ่มขึ้นตามเงินเฟ้อ',
+    chartPost: 'เงินก้อนคงเหลือตามอายุ', capPost: 'แท่งหายไปก่อนเส้นเป้าหมาย = เงินหมดก่อน · ชี้ที่แท่งเพื่อดูตัวเลข',
+    tableT: 'ตารางรายปี', thAge: 'อายุ', thExp: 'ใช้จ่าย/เดือน', thInc: 'รายได้/เดือน', thBal: 'เงินเหลือสิ้นปี',
+    notePost: 'ถอนส่วนที่รายได้ไม่พอจ่ายทุกต้นเดือน ทบต้นรายเดือน · ค่าใช้จ่ายเพิ่มตามเงินเฟ้อปีละครั้ง',
+    glossT: 'คำที่ควรรู้',
+    gInfT: 'เงินเฟ้อ', gInf: 'ของแพงขึ้นทุกปี เงินเท่าเดิมจึงซื้อของได้น้อยลง',
+    gRetT: 'ผลตอบแทน', gRet: 'เงินที่งอกเพิ่มจากการฝากหรือลงทุน ยิ่งสูงยิ่งเสี่ยง',
+    gCompT: 'ทบต้น', gComp: 'ดอกผลงอกต่อเป็นดอกผล เหมือนก้อนหิมะ ยิ่งเริ่มเร็วยิ่งโตเร็ว',
+    footer: 'เป็นการประมาณการเท่านั้น ไม่รับประกันผลตอบแทน ควรทบทวนแผนปีละครั้ง',
+    quotes: [['🌱','ออมวันละนิด อนาคตสบายใจ'],['🪺','ออมทีละนิด เหมือนนกน้อยสร้างรัง'],['☕','งดกาแฟแก้วเดียว = ก้าวแรกสู่เกษียณสบาย'],
+             ['🌈','เริ่มวันนี้ ดีกว่ารอพรุ่งนี้'],['💪','ตัวเราในอนาคต จะขอบคุณตัวเราวันนี้'],['🌻','เงินออมเติบโตได้ เหมือนต้นไม้ที่เรารดน้ำทุกวัน']],
+    // ข้อความที่มีตัวเลข
+    million: ' ล้าน',
+    yrs: n => n + ' <small>ปี</small>',
+    yrsPlain: n => n + ' ปี',
+    perMonth: 'บาท/เดือน', baht: 'บาท',
+    errFill: 'กรอกข้อมูลให้ครบทุกช่อง',
+    errRetire: 'อายุเกษียณต้องมากกว่าอายุตอนนี้',
+    errLife: 'อายุที่ใช้เงินถึง ต้องมากกว่าอายุเกษียณ',
+    errTarget: 'อายุเป้าหมายต้องมากกว่าอายุตอนนี้',
+    bannerPre: x => 'ออมเพิ่มเดือนละ ' + x + ' ก็เกษียณได้ตามแผน',
+    bannerPreOk: 'เงินเก็บที่มีพอแล้ว ไม่ต้องออมเพิ่ม',
+    pmtD: n => 'ทุกเดือน อีก ' + n + ' ปี',
+    pmtDOk: x => 'เกินเป้า ' + x + ' บาท',
+    atAge: a => 'ตอนอายุ ' + a,
+    cheerPre: (d, small) => 'เฉลี่ยแค่ <b>วันละ ' + d + ' บาท</b> ' + (small ? 'น้อยกว่าค่าชานมไข่มุกแก้วเดียว! เริ่มได้เลยวันนี้' : 'หยอดกระปุกทุกวัน อนาคตสบายแน่นอน'),
+    cheerPreOk: '<b>เยี่ยมมาก!</b> คุณเตรียมตัวได้ดีแล้ว ออมต่ออีกนิดเพื่อเป็นเงินเผื่อ',
+    factInfl: (e, e2, a) => 'ของแพงขึ้นทุกปี: <b>' + e + '</b> วันนี้ = <b>' + e2 + '</b> บาท/เดือน ตอนอายุ ' + a,
+    factYears: (m, a, b) => 'ต้องใช้เงินหลังเกษียณอีก <b>' + m + ' ปี</b> (อายุ ' + a + '–' + b + ')',
+    factEmpty: a => 'ถ้าไม่ออมเพิ่ม เงินหมดตอนอายุ <b>' + a + '</b>',
+    mkRetire: a => 'เกษียณ ' + a, mkTarget: a => 'เป้าหมาย ' + a,
+    dsSavings: 'เงินเก็บ', dsLeft: 'เงินคงเหลือ',
+    tipTitle: a => 'อายุ ' + a + ' ปี', tipEmpty: 'หมดแล้ว',
+    compSaved: 'เงินเก็บเดิม', compContrib: 'เงินที่ออมเพิ่ม', compGrowth: 'ผลตอบแทนงอกเงย',
+    altLater: a => 'เกษียณช้าลง 5 ปี (อายุ ' + a + ')',
+    altSpend: x => 'ใช้จ่ายน้อยลง 20% (' + x + '/เดือน)',
+    altReturn: r => 'ลงทุนให้ได้ผลตอบแทน ' + r + '%',
+    altDown: x => 'ลดลง ' + x,
+    bannerPostOk: (a, x) => 'พอใช้ถึงอายุ ' + a + (x ? ' · เหลือเผื่อ ~' + x + ' บาท' : ''),
+    bannerPostBad: y => 'เงินหมดก่อนเป้าหมาย ' + y + ' ปี',
+    untilD: (y, m) => 'ใช้ได้อีก ' + y + ' ปี ' + m + ' เดือน',
+    forever: 'ตลอดชีวิต', foreverD: 'เงินไม่หมด',
+    cheerPostOk: a => '<b>สบายใจได้!</b> เงินพอใช้ถึงอายุ ' + a + ' ไปเที่ยว ทำสิ่งที่รักได้เต็มที่',
+    cheerPostBad: (x, a) => 'ไม่ต้องกังวล ปรับนิดเดียวก็พอ ลดใช้จ่ายเหลือ <b>' + x + ' บาท/เดือน</b> ก็พอถึงอายุ ' + a + ' แล้ว',
+    factMax: (x, a) => 'ใช้ได้สูงสุดราว <b>' + x + '</b> บาท/เดือน ก็ยังพอถึงอายุ ' + a,
+    factNeed: (a, x) => 'เงินก้อนที่ควรมีเพื่อให้พอถึงอายุ ' + a + ': <b>' + x + ' บาท</b>',
+    factShort: x => ' <span class="warn">(ขาด ' + x + ')</span>',
+    factReturn: (r, i) => 'เงินก้อนงอก <b>' + r + '%</b>/ปี แต่ค่าใช้จ่ายก็แพงขึ้น <b>' + i + '%</b>/ปี',
+    gone: 'หมด'
+  },
+  en: {
+    docTitle: 'Retirement Planner by Nok SAKUNA',
+    title: 'Retirement Planner',
+    subtitle: 'Fill in a few numbers to see how much to save — and whether your money will last.',
+    print: 'Print / PDF',
+    tabsAria: 'Choose a section',
+    tabPre: 'Still working', tabPreSub: 'How much to save each month',
+    tabPost: 'Retired', tabPostSub: 'How long your money will last',
+    phPre: 'How much to save each month for a comfortable retirement', phPost: 'How long your savings will last',
+    age: 'Your age', lifePre: 'Money should last until', lifePost: 'Money should last until', retire: 'Retire at age',
+    expPre: 'Monthly spending', expPreHelp: "In today's prices — we add inflation for you",
+    saved: 'Savings so far', savedHelp: 'Deposits, funds, RMF, etc.',
+    more: 'Adjust assumptions (optional)',
+    inf: 'Inflation · prices rise each year by', infHelp: 'Thailand averages about 2–3% a year',
+    rPre: 'Return while saving', rPost: 'Return after retiring', rLump: 'Return on savings',
+    cDeposit: 'Deposit', cMixed: 'Mixed fund', cStocks: 'Stocks', cBonds: 'Bonds',
+    less: 'Decrease', more_: 'Increase',
+    uYr: 'yrs', uBaht: 'THB', uPctYr: '%/yr',
+    lump: 'Retirement savings', expPost: 'Monthly spending', pension: 'Monthly income',
+    pensionHelp: 'Pension, social security, rent, etc. (enter 0 if none)', pinf: 'This income rises with the cost of living each year',
+    kPmt: 'Save each month', kNeed: 'Needed at retirement',
+    chartPre: 'Savings by age', capHover: 'Hover over a bar to see the amount', noChart: 'Charts need an internet connection',
+    lgSave: 'Saving years', lgSpend: 'Spending years after retiring',
+    compT: 'Where your retirement money comes from', altsT: 'Want to save less?', altsCap: 'Try one of these',
+    dataT: 'Detailed numbers',
+    rN: 'Years to save', rM: 'Years of retirement', rExp: 'Monthly spending at retirement',
+    rFv: 'Your current savings will grow to', rGap: 'Still needed', rTotal: 'Total you put in yourself',
+    notePre: 'Equal deposits at the end of each month, compounded monthly · After retiring, withdrawals at the start of each month; spending rises with inflation once a year',
+    kUntil: 'Money lasts until age', kNet: 'Taken from savings', kNetD: 'First year · rises with inflation',
+    chartPost: 'Savings left by age', capPost: 'Bars ending before the target line = money runs out early · Hover over a bar to see the amount',
+    tableT: 'Year-by-year table', thAge: 'Age', thExp: 'Spending/mo', thInc: 'Income/mo', thBal: 'Left at year end',
+    notePost: 'Any shortfall is withdrawn at the start of each month, compounded monthly · Spending rises with inflation once a year',
+    glossT: 'Good to know',
+    gInfT: 'Inflation', gInf: 'Prices go up every year, so the same money buys less.',
+    gRetT: 'Return', gRet: 'Money your savings earn from deposits or investing. Higher return usually means higher risk.',
+    gCompT: 'Compounding', gComp: 'Earnings that earn more earnings — like a snowball. Start early and it grows faster.',
+    footer: 'Estimates only — returns are not guaranteed. Review your plan once a year.',
+    quotes: [['🌱','Save a little every day, smile later'],['🪺','Build your nest one twig at a time'],['☕','Skip one coffee — take one step toward a comfy retirement'],
+             ['🌈','Start today, not tomorrow'],['💪','Future you will thank you'],['🌻','Savings grow like a plant you water every day']],
+    million: 'M',
+    yrs: n => n + ' <small>yrs</small>',
+    yrsPlain: n => n + ' yrs',
+    perMonth: 'THB/mo', baht: 'THB',
+    errFill: 'Please fill in every field',
+    errRetire: 'Retirement age must be higher than your age',
+    errLife: 'The "money should last until" age must be higher than your retirement age',
+    errTarget: 'Target age must be higher than your age',
+    bannerPre: x => 'Save ' + x + ' a month and you can retire on plan',
+    bannerPreOk: "You've already saved enough — no extra saving needed",
+    pmtD: n => 'every month for ' + n + ' years',
+    pmtDOk: x => x + ' THB above target',
+    atAge: a => 'at age ' + a,
+    cheerPre: (d, small) => "That's only <b>" + d + ' THB a day</b>. ' + (small ? 'Less than a bubble tea — start today!' : 'Drop a little in every day and your future is set.'),
+    cheerPreOk: "<b>Great job!</b> You're well prepared. Keep saving a bit extra as a cushion.",
+    factInfl: (e, e2, a) => 'Prices rise every year: <b>' + e + '</b> today = <b>' + e2 + '</b> THB/mo at age ' + a,
+    factYears: (m, a, b) => 'Your money needs to last <b>' + m + ' years</b> (age ' + a + '–' + b + ')',
+    factEmpty: a => 'Without extra saving, money runs out at age <b>' + a + '</b>',
+    mkRetire: a => 'Retire ' + a, mkTarget: a => 'Target ' + a,
+    dsSavings: 'Savings', dsLeft: 'Balance',
+    tipTitle: a => 'Age ' + a, tipEmpty: 'Run out',
+    compSaved: 'Current savings', compContrib: 'Monthly saving', compGrowth: 'Investment growth',
+    altLater: a => 'Retire 5 years later (age ' + a + ')',
+    altSpend: x => 'Spend 20% less (' + x + '/mo)',
+    altReturn: r => 'Invest for a ' + r + '% return',
+    altDown: x => x + ' less',
+    bannerPostOk: (a, x) => 'Enough until age ' + a + (x ? ' · ~' + x + ' THB to spare' : ''),
+    bannerPostBad: y => 'Money runs out ' + y + ' years before your target',
+    untilD: (y, m) => y + ' yrs ' + m + ' mo left',
+    forever: 'For life', foreverD: "Your money won't run out",
+    cheerPostOk: a => '<b>Relax!</b> Your money lasts until ' + a + '. Travel and enjoy what you love.',
+    cheerPostBad: (x, a) => "Don't worry — a small change fixes it. Spend <b>" + x + ' THB/mo</b> and it lasts until ' + a + '.',
+    factMax: (x, a) => 'You could spend up to about <b>' + x + '</b> THB/mo and still last until ' + a,
+    factNeed: (a, x) => 'Savings needed to last until ' + a + ': <b>' + x + ' THB</b>',
+    factShort: x => ' <span class="warn">(' + x + ' short)</span>',
+    factReturn: (r, i) => 'Savings grow <b>' + r + '%</b>/yr, but spending also rises <b>' + i + '%</b>/yr',
+    gone: 'Gone'
+  }
+};
+let LANG = 'th';
+const t = k => I18N[LANG][k];
+
 /* ---------- ตัวช่วย ---------- */
-const fmt0 = new Intl.NumberFormat('th-TH', {maximumFractionDigits:0});
-const fmt1 = new Intl.NumberFormat('th-TH', {maximumFractionDigits:1});
-const baht = v => fmt0.format(Math.round(v)) + ' บาท';
+const fmt0 = new Intl.NumberFormat('en-US', {maximumFractionDigits:0});
+const fmt1 = new Intl.NumberFormat('en-US', {maximumFractionDigits:1});
+const baht = v => fmt0.format(Math.round(v)) + ' ' + t('baht');
 const short = v => {
   const a = Math.abs(v);
-  if (a >= 1e6) return fmt1.format(v/1e6) + ' ล้าน';
+  if (a >= 1e6) return fmt1.format(v/1e6) + t('million');
   if (a >= 1e4) return fmt0.format(Math.round(v/1e3) * 1e3);
   return fmt0.format(Math.round(v));
 };
@@ -363,19 +539,30 @@ const set = (id, html) => $(id).innerHTML = html;
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const mRate = pct => Math.pow(1 + pct/100, 1/12) - 1;
 
+/* ---------- สลับภาษา ---------- */
+function applyLang(lang){
+  LANG = I18N[lang] ? lang : 'th';
+  document.documentElement.lang = LANG;
+  document.title = t('docTitle');
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+  document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === LANG));
+  showQuote();
+  updateRetireOut();
+  calcPre(); calcPost();
+  try { localStorage.setItem('retireLang', LANG); } catch (e) {}
+}
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
 /* ---------- คำคมให้กำลังใจ ---------- */
-const QUOTES = [
-  ['🌱','ออมวันละนิด อนาคตสบายใจ'],
-  ['🪺','ออมทีละนิด เหมือนนกน้อยสร้างรัง'],
-  ['☕','งดกาแฟแก้วเดียว = ก้าวแรกสู่เกษียณสบาย'],
-  ['🌈','เริ่มวันนี้ ดีกว่ารอพรุ่งนี้'],
-  ['💪','ตัวเราในอนาคต จะขอบคุณตัวเราวันนี้'],
-  ['🌻','เงินออมเติบโตได้ เหมือนต้นไม้ที่เรารดน้ำทุกวัน']
-];
 let qi = 0;
+function showQuote(){
+  const q = t('quotes')[qi % t('quotes').length];
+  $('quote').innerHTML = '<span class="emo">' + q[0] + '</span><span>' + q[1] + '</span>';
+}
 setInterval(() => {
   const q = $('quote'); q.style.opacity = 0;
-  setTimeout(() => { qi = (qi + 1) % QUOTES.length; q.innerHTML = '<span class="emo">' + QUOTES[qi][0] + '</span><span>' + QUOTES[qi][1] + '</span>'; q.style.opacity = 1; }, 400);
+  setTimeout(() => { qi++; showQuote(); q.style.opacity = 1; }, 400);
 }, 5000);
 
 /* ---------- ช่องกรอก ---------- */
@@ -412,10 +599,11 @@ function syncChips(){
     c.querySelectorAll('button').forEach(b => b.classList.toggle('on', parseFloat(b.dataset.v) === v));
   });
 }
+const updateRetireOut = () => $('p_retire_out').innerHTML = t('yrs')($('p_retire').value);
 const timers = {};
 ['pre','post'].forEach(p => ['input','change'].forEach(ev => $(p).addEventListener(ev, () => {
   syncChips();
-  if (p === 'pre') $('p_retire_out').innerHTML = $('p_retire').value + ' <small>ปี</small>';
+  if (p === 'pre') updateRetireOut();
   clearTimeout(timers[p]);
   timers[p] = setTimeout(p === 'pre' ? calcPre : calcPost, 120);
 })));
@@ -446,7 +634,6 @@ if (hasChart){
   Chart.defaults.font.size = 12;
   Chart.defaults.color = '#64748b';
 }
-// เส้นตั้งประบอกอายุสำคัญ (index ของแท่ง)
 const markerPlugin = {
   id: 'markers',
   afterDatasetsDraw(chart, _a, opts){
@@ -501,8 +688,8 @@ function drawBars(k, labels, data, colors, markers, seriesLabel){
           backgroundColor: '#0f172a', padding: 10, cornerRadius: 10, displayColors: false,
           titleFont: {weight: '600'},
           callbacks: {
-            title: it => 'อายุ ' + it[0].label + ' ปี',
-            label: c => c.dataset.label + ': ' + (c.parsed.y <= 0 ? 'หมดแล้ว' : baht(c.parsed.y))
+            title: it => t('tipTitle')(it[0].label),
+            label: c => c.dataset.label + ': ' + (c.parsed.y <= 0 ? t('tipEmpty') : baht(c.parsed.y))
           }
         },
         markers: { items: markers }
@@ -522,7 +709,6 @@ function planPre(age, ret, exp, saved, inf, rPre, rPost, life){
   const pmt = gap <= 0 ? 0 : (i === 0 ? gap/N : gap * i / (Math.pow(1+i, N) - 1));
   return {n, m, N, expAtRet, need, fvSaved, gap, pmt};
 }
-// เงินเก็บ ณ ต้นปีของแต่ละอายุ
 function simulatePre(age, ret, life, saved, pmt, expAtRet, inf, rPre, rPost){
   const iPre = mRate(rPre), iPost = mRate(rPost);
   let bal = saved, pts = [{age, y:bal}], emptyAt = null;
@@ -545,9 +731,9 @@ function calcPre(){
   const age = val('p_age'), ret = val('p_retire'), exp = val('p_expense'), saved = val('p_saved') || 0;
   const inf = val('p_inf'), rPre = val('p_rpre'), rPost = val('p_rpost'), life = val('p_life');
   $('p_retire_box').classList.toggle('bad-f', !isNaN(age) && ret <= age);
-  if ([age,ret,exp,inf,rPre,rPost,life].some(isNaN)) return fail('p','กรอกข้อมูลให้ครบทุกช่อง');
-  if (ret <= age) return fail('p','อายุเกษียณต้องมากกว่าอายุตอนนี้');
-  if (life <= ret) return fail('p','อายุที่ใช้เงินถึง ต้องมากกว่าอายุเกษียณ');
+  if ([age,ret,exp,inf,rPre,rPost,life].some(isNaN)) return fail('p', t('errFill'));
+  if (ret <= age) return fail('p', t('errRetire'));
+  if (life <= ret) return fail('p', t('errLife'));
   fail('p','');
 
   const P = planPre(age, ret, exp, saved, inf, rPre, rPost, life);
@@ -557,36 +743,35 @@ function calcPre(){
 
   const b = $('p_banner');
   b.className = 'banner ' + (pmtC > 0 ? 'info' : 'good');
-  b.textContent = pmtC > 0 ? 'ออมเพิ่มเดือนละ ' + baht(pmtC) + ' ก็เกษียณได้ตามแผน' : 'เงินเก็บที่มีพอแล้ว ไม่ต้องออมเพิ่ม';
+  b.textContent = pmtC > 0 ? t('bannerPre')(baht(pmtC)) : t('bannerPreOk');
 
-  set('p_pmt', fmt0.format(pmtC) + '<small>บาท/เดือน</small>');
-  set('p_pmt_d', pmtC > 0 ? 'ทุกเดือน อีก ' + P.n + ' ปี' : 'เกินเป้า ' + short(P.fvSaved - P.need) + ' บาท');
-  set('p_need', short(P.need) + '<small>บาท</small>');
-  set('p_need_d', 'ตอนอายุ ' + ret);
+  set('p_pmt', fmt0.format(pmtC) + '<small>' + t('perMonth') + '</small>');
+  set('p_pmt_d', pmtC > 0 ? t('pmtD')(P.n) : t('pmtDOk')(short(P.fvSaved - P.need)));
+  set('p_need', short(P.need) + '<small>' + t('baht') + '</small>');
+  set('p_need_d', t('atAge')(ret));
 
   const daily = Math.ceil(pmtC / 30);
   set('p_cheer', pmtC > 0
-    ? '<span class="emo">🐦‍🔥</span><span>เฉลี่ยแค่ <b>วันละ ' + fmt0.format(daily) + ' บาท</b> ' +
-      (daily <= 100 ? 'น้อยกว่าค่าชานมไข่มุกแก้วเดียว! เริ่มได้เลยวันนี้' : 'หยอดกระปุกทุกวัน อนาคตสบายแน่นอน') + ' <span class="emo">💪</span></span>'
-    : '<span class="emo">🎉</span><span><b>เยี่ยมมาก!</b> คุณเตรียมตัวได้ดีแล้ว ออมต่ออีกนิดเพื่อเป็นเงินเผื่อ</span>');
+    ? '<span class="emo">🐦‍🔥</span><span>' + t('cheerPre')(fmt0.format(daily), daily <= 100) + ' <span class="emo">💪</span></span>'
+    : '<span class="emo">🎉</span><span>' + t('cheerPreOk') + '</span>');
 
   const facts = [
-    'ของแพงขึ้นทุกปี: <b>' + fmt0.format(exp) + '</b> วันนี้ = <b>' + fmt0.format(Math.round(P.expAtRet)) + '</b> บาท/เดือน ตอนอายุ ' + ret,
-    'ต้องใช้เงินหลังเกษียณอีก <b>' + P.m + ' ปี</b> (อายุ ' + ret + '–' + life + ')'
+    t('factInfl')(fmt0.format(exp), fmt0.format(Math.round(P.expAtRet)), ret),
+    t('factYears')(P.m, ret, life)
   ];
-  if (none && none.emptyAt !== null) facts.push('<span class="warn">ถ้าไม่ออมเพิ่ม เงินหมดตอนอายุ <b>' + fmt0.format(Math.floor(none.emptyAt)) + '</b></span>');
+  if (none && none.emptyAt !== null) facts.push('<span class="warn">' + t('factEmpty')(fmt0.format(Math.floor(none.emptyAt))) + '</span>');
   set('p_facts', facts.map(f => '<li><span>' + f + '</span></li>').join(''));
 
   const pre = css('--pre'), preMid = css('--pre-mid');
   drawBars('p', plan.pts.map(p => p.age), plan.pts.map(p => p.y),
     plan.pts.map(p => p.age < ret ? pre : preMid),
-    [{idx: ret - age, left: true, label: 'เกษียณ ' + ret, color: pre}], 'เงินเก็บ');
+    [{idx: ret - age, left: true, label: t('mkRetire')(ret), color: pre}], t('dsSavings'));
 
   const total = Math.max(P.need, P.fvSaved), growth = Math.max(0, total - saved - contrib);
   const parts = [
-    {l:'เงินเก็บเดิม', v:saved, c:preMid},
-    {l:'เงินที่ออมเพิ่ม', v:contrib, c:pre},
-    {l:'ผลตอบแทนงอกเงย', v:growth, c:css('--gold')}
+    {l:t('compSaved'), v:saved, c:preMid},
+    {l:t('compContrib'), v:contrib, c:pre},
+    {l:t('compGrowth'), v:growth, c:css('--gold')}
   ].filter(p => p.v > 0);
   const sum = parts.reduce((s,p) => s + p.v, 0) || 1;
   set('p_comp', parts.map(p => '<div style="flex:' + p.v + ';background:' + p.c + '" title="' + p.l + '"></div>').join(''));
@@ -594,18 +779,18 @@ function calcPre(){
 
   const alts = [];
   if (pmtC > 0){
-    if (ret + 5 < life) alts.push(['เกษียณช้าลง 5 ปี (อายุ ' + (ret+5) + ')', planPre(age, ret+5, exp, saved, inf, rPre, rPost, life).pmt]);
-    alts.push(['ใช้จ่ายน้อยลง 20% (' + fmt0.format(exp*0.8) + '/เดือน)', planPre(age, ret, exp*0.8, saved, inf, rPre, rPost, life).pmt]);
-    if (rPre < 6) alts.push(['ลงทุนให้ได้ผลตอบแทน ' + fmt1.format(rPre+2) + '%', planPre(age, ret, exp, saved, inf, rPre+2, rPost, life).pmt]);
+    if (ret + 5 < life) alts.push([t('altLater')(ret+5), planPre(age, ret+5, exp, saved, inf, rPre, rPost, life).pmt]);
+    alts.push([t('altSpend')(fmt0.format(exp*0.8)), planPre(age, ret, exp*0.8, saved, inf, rPre, rPost, life).pmt]);
+    if (rPre < 6) alts.push([t('altReturn')(fmt1.format(rPre+2)), planPre(age, ret, exp, saved, inf, rPre+2, rPost, life).pmt]);
   }
   $('p_alts_card').style.display = alts.length ? '' : 'none';
-  set('p_alts', alts.map(([t, v]) => {
+  set('p_alts', alts.map(([txt, v]) => {
     const vc = Math.ceil(v);
-    return '<div class="alt"><span>' + t + '</span><span class="r"><b>' + fmt0.format(vc) + '</b> บาท/เดือน<span>ลดลง ' + fmt0.format(pmtC - vc) + '</span></span></div>';
+    return '<div class="alt"><span>' + txt + '</span><span class="r"><b>' + fmt0.format(vc) + '</b> ' + t('perMonth') + '<span>' + t('altDown')(fmt0.format(pmtC - vc)) + '</span></span></div>';
   }).join(''));
 
-  set('p_r_n', P.n + ' ปี');
-  set('p_r_m', P.m + ' ปี');
+  set('p_r_n', t('yrsPlain')(P.n));
+  set('p_r_m', t('yrsPlain')(P.m));
   set('p_r_exp', baht(P.expAtRet));
   set('p_r_fv', baht(P.fvSaved));
   set('p_r_gap', baht(P.gap));
@@ -617,8 +802,8 @@ function calcPost(){
   const age = val('q_age'), lump = val('q_lump'), exp = val('q_expense'), pen = val('q_pension') || 0;
   const inf = val('q_inf'), r = val('q_r'), life = val('q_life');
   const penInf = $('q_pinf').checked;
-  if ([age,lump,exp,inf,r,life].some(isNaN)) return fail('q','กรอกข้อมูลให้ครบทุกช่อง');
-  if (life <= age) return fail('q','อายุเป้าหมายต้องมากกว่าอายุตอนนี้');
+  if ([age,lump,exp,inf,r,life].some(isNaN)) return fail('q', t('errFill'));
+  if (life <= age) return fail('q', t('errTarget'));
   fail('q','');
 
   const MAX_AGE = 120, i = mRate(r);
@@ -646,31 +831,27 @@ function calcPost(){
 
   const b = $('q_banner');
   b.className = 'banner ' + (ok ? 'good' : 'bad');
-  b.textContent = ok
-    ? 'พอใช้ถึงอายุ ' + life + (diff > 0 ? ' · เหลือเผื่อ ~' + short(diff) + ' บาท' : '')
-    : 'เงินหมดก่อนเป้าหมาย ' + fmt1.format(life - untilAge) + ' ปี';
+  b.textContent = ok ? t('bannerPostOk')(life, diff > 0 ? short(diff) : '') : t('bannerPostBad')(fmt1.format(life - untilAge));
 
   if (depleted){
-    set('q_until', fmt0.format(Math.floor(untilAge)) + '<small>ปี</small>');
-    set('q_until_d', 'ใช้ได้อีก ' + Math.floor(months/12) + ' ปี ' + Math.floor(months % 12) + ' เดือน');
+    set('q_until', t('yrs')(fmt0.format(Math.floor(untilAge))));
+    set('q_until_d', t('untilD')(Math.floor(months/12), Math.floor(months % 12)));
   } else {
-    set('q_until', 'ตลอดชีวิต');
-    set('q_until_d', 'เงินไม่หมด');
+    set('q_until', t('forever'));
+    set('q_until_d', t('foreverD'));
   }
-  set('q_net', net0 > 0 ? fmt0.format(Math.round(net0)) + '<small>บาท/เดือน</small>' : '0<small>บาท</small>');
+  set('q_net', (net0 > 0 ? fmt0.format(Math.round(net0)) : '0') + '<small>' + t('perMonth') + '</small>');
 
   set('q_cheer', ok
-    ? '<span class="emo">🌴</span><span><b>สบายใจได้!</b> เงินพอใช้ถึงอายุ ' + life + ' ไปเที่ยว ทำสิ่งที่รักได้เต็มที่</span>'
-    : '<span class="emo">🤗</span><span>ไม่ต้องกังวล ปรับนิดเดียวก็พอ ลดใช้จ่ายเหลือ <b>' + fmt0.format(maxExp) + ' บาท/เดือน</b> ก็พอถึงอายุ ' + life + ' แล้ว</span>');
+    ? '<span class="emo">🌴</span><span>' + t('cheerPostOk')(life) + '</span>'
+    : '<span class="emo">🤗</span><span>' + t('cheerPostBad')(fmt0.format(maxExp), life) + '</span>');
 
   const facts = [];
-  if (ok) facts.push('ใช้ได้สูงสุดราว <b>' + fmt0.format(maxExp) + '</b> บาท/เดือน ก็ยังพอถึงอายุ ' + life);
-  facts.push('เงินก้อนที่ควรมีเพื่อให้พอถึงอายุ ' + life + ': <b>' + short(need) + ' บาท</b>' +
-    (ok ? '' : ' <span class="warn">(ขาด ' + short(-diff) + ')</span>'));
-  facts.push('เงินก้อนงอก <b>' + fmt1.format(r) + '%</b>/ปี แต่ค่าใช้จ่ายก็แพงขึ้น <b>' + fmt1.format(inf) + '%</b>/ปี');
+  if (ok) facts.push(t('factMax')(fmt0.format(maxExp), life));
+  facts.push(t('factNeed')(life, short(need)) + (ok ? '' : t('factShort')(short(-diff))));
+  facts.push(t('factReturn')(fmt1.format(r), fmt1.format(inf)));
   set('q_facts', facts.map(f => '<li><span>' + f + '</span></li>').join(''));
 
-  // เงิน ณ ต้นปีของแต่ละอายุ
   const xMax = Math.max(life + 2, depleted ? Math.ceil(untilAge) + 2 : Math.min(MAX_AGE, life + 5));
   const labels = [], data = [];
   for (let a = age; a <= xMax; a++){
@@ -679,38 +860,40 @@ function calcPost(){
   }
   const post = css('--post'), postMid = css('--post-mid');
   drawBars('q', labels, data, labels.map(a => a <= life ? post : postMid),
-    [{idx: life - age, label: 'เป้าหมาย ' + life, color: ok ? css('--good') : css('--bad')}], 'เงินคงเหลือ');
+    [{idx: life - age, label: t('mkTarget')(life), color: ok ? css('--good') : css('--bad')}], t('dsLeft'));
 
   $('q_tbody').innerHTML = rows.map(rw =>
     '<tr' + (rw.age === life - 1 ? ' class="hl"' : '') + '><td>' + rw.age + '</td><td>' + fmt0.format(Math.round(rw.e)) +
     '</td><td>' + fmt0.format(Math.round(rw.p)) + '</td><td' + (rw.bal <= 0 ? ' class="neg"' : '') + '>' +
-    (rw.bal <= 0 ? 'หมด' : fmt0.format(Math.round(rw.bal))) + '</td></tr>').join('');
+    (rw.bal <= 0 ? t('gone') : fmt0.format(Math.round(rw.bal))) + '</td></tr>').join('');
 }
 
 /* ---------- แท็บ ---------- */
 const TABS = [['tab-pre','pre','p'], ['tab-post','post','q']];
 function showTab(id){
-  TABS.forEach(([t, p, k]) => {
-    const on = t === id;
-    $(t).setAttribute('aria-selected', on);
-    $(t).tabIndex = on ? 0 : -1;
+  TABS.forEach(([tb, p, k]) => {
+    const on = tb === id;
+    $(tb).setAttribute('aria-selected', on);
+    $(tb).tabIndex = on ? 0 : -1;
     $(p).hidden = !on;
     if (on && charts[k]) charts[k].resize();
   });
   try { localStorage.setItem('retireTab', id); } catch (e) {}
 }
-TABS.forEach(([t]) => $(t).addEventListener('click', () => showTab(t)));
+TABS.forEach(([tb]) => $(tb).addEventListener('click', () => showTab(tb)));
 $('tab-pre').parentElement.addEventListener('keydown', e => {
   if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
   const next = document.activeElement.id === 'tab-pre' ? 'tab-post' : 'tab-pre';
   showTab(next); $(next).focus();
 });
-try { const saved = localStorage.getItem('retireTab'); if (saved && $(saved)) showTab(saved); } catch (e) {}
 window.addEventListener('beforeprint', () => Object.values(charts).forEach(c => c.resize()));
 
+/* ---------- เริ่มต้น: ภาษาจาก ?lang=en หรือที่เคยเลือกไว้ ---------- */
+let startLang = new URLSearchParams(location.search).get('lang');
+if (!startLang) { try { startLang = localStorage.getItem('retireLang'); } catch (e) {} }
+try { const savedTab = localStorage.getItem('retireTab'); if (savedTab && $(savedTab)) showTab(savedTab); } catch (e) {}
 syncChips();
-calcPre();
-calcPost();
+applyLang(startLang || 'th');
 </script>
 </body>
 </html>
